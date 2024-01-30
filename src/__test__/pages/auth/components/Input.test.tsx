@@ -7,7 +7,7 @@ import userEvent from "@testing-library/user-event";
 describe("Input component", () => {
   test("should render", () => {
     render(
-      <Form fields={{ name: "" }}>
+      <Form fields={{ name: "" }} onSubmit={() => {}}>
         <Input label="Name:" name="name" placeholder="" errors={{}} />
       </Form>
     );
@@ -16,7 +16,7 @@ describe("Input component", () => {
 
   test("should write", () => {
     render(
-      <Form fields={{ name: "" }}>
+      <Form fields={{ name: "" }} onSubmit={() => {}}>
         <Input
           label="Name:"
           placeholder="put your name"
@@ -35,7 +35,7 @@ describe("Input component", () => {
 
   test("should show required error", async () => {
     render(
-      <Form fields={{ name: "" }}>
+      <Form fields={{ name: "" }} onSubmit={() => {}}>
         <Input
           label="Name:"
           placeholder="put your name"
@@ -58,7 +58,7 @@ describe("Input component", () => {
 
   test("should show required error when I desfocus", async () => {
     render(
-      <Form fields={{ name: "" }}>
+      <Form fields={{ name: "" }} onSubmit={() => {}}>
         <div>Desfocus Element</div>
         <Input
           label="Name:"
@@ -81,9 +81,9 @@ describe("Input component", () => {
     expect(requiredError).toBeInTheDocument();
   });
 
-  test("should handle differents errors", async () => {
+  test("should handle different errors", async () => {
     render(
-      <Form fields={{ name: "" }}>
+      <Form fields={{ name: "" }} onSubmit={() => {}}>
         <Input
           label="Name:"
           placeholder="put your name"

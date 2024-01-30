@@ -1,11 +1,11 @@
 import { render } from "@testing-library/react";
 import { describe, expect, test } from "vitest";
-import Signup from "../../../pages/auth/Signup";
+import Note from "../../../pages/notes/Note";
 import { GlobalProviders } from "../../App.test";
 
-describe("Signup component", () => {
+describe("Note component", () => {
   test("should render", () => {
-    render(<Signup />, { wrapper: GlobalProviders });
+    render(<Note />, { wrapper: GlobalProviders });
     expect(true).toBeTruthy();
   });
 });

@@ -1,10 +1,16 @@
 import { ReactNode, createContext } from "react";
-import { UseFormRegister, FieldValues, FieldErrors } from "react-hook-form";
+import {
+  UseFormRegister,
+  FieldValues,
+  FieldErrors,
+  UseFormWatch,
+} from "react-hook-form";
 import useAppForm from "../../../hooks/useAppForm";
 
 interface FormProps {
-  fields: { [key: string]: unknown };
+  fields: Record<string, string>;
   children: ReactNode;
+  onSubmit: (data: FormProps["fields"]) => void;
 }
 
 interface FormContextValues {
@@ -12,12 +18,13 @@ interface FormContextValues {
   onSubmit?: () => void;
   errors?: FieldErrors<FieldValues>;
   fields?: { [key: string]: unknown };
+  watch?: UseFormWatch<FieldValues>;
 }
 
 export const FormContext = createContext<FormContextValues>({});
 
-const Form = ({ fields, children }: FormProps) => {
-  const formState = useAppForm<typeof fields>();
+const Form = ({ fields, children, onSubmit }: FormProps) => {
+  const formState = useAppForm<typeof fields>(onSubmit);
   return (
     <FormContext.Provider value={{ ...formState, fields }}>
       <form onSubmit={formState.onSubmit}>{children}</form>

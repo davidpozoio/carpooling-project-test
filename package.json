@@ -12,6 +12,9 @@
     "dev-test": "vite"
   },
   "dependencies": {
+    "@types/draft-js": "^0.11.17",
+    "axios": "^1.6.5",
+    "draft-js": "^0.11.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.49.3",

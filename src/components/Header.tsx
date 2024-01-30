@@ -2,15 +2,17 @@ import { Link } from "react-router-dom";
 import ROUTES from "../consts/routes";
 
 interface HeaderProps {
-  isHome: boolean;
+  path: string;
 }
 
-const Header = ({ isHome = true }: HeaderProps) => {
+const Header = ({ path }: HeaderProps) => {
   return (
     <header className="header">
       <button className="options">...</button>
-      <span>Blocky</span>
-      {isHome && (
+      <Link to={path.match("/notes") ? ROUTES.NOTES.ME : ROUTES.HOME.ME}>
+        Blocky
+      </Link>
+      {path === ROUTES.HOME.ME && (
         <>
           <Link to={ROUTES.AUTH.LOGIN}>Log in</Link>
           <Link to={ROUTES.AUTH.SIGNUP}>Sign up</Link>
