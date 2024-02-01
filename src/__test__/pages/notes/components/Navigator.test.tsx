@@ -1,12 +1,25 @@
-import { render, screen } from "@testing-library/react";
-import { describe, expect, test } from "vitest";
+import { render, screen, waitFor } from "@testing-library/react";
+import { describe, expect, test, vi } from "vitest";
 import { GlobalProviders } from "../../../App.test";
 import { Route, Routes } from "react-router-dom";
 import ROUTES from "../../../../consts/routes";
 import userEvent from "@testing-library/user-event";
 import Navigator from "../../../../pages/notes/components/Navigator";
+import AuthRoute from "../../../../guards/AuthRoute";
 
 describe("Navigator component", () => {
+  const mocks = vi.hoisted(() => ({
+    logout: vi.fn(() =>
+      Promise.resolve({
+        message: "logout succesfully",
+      })
+    ),
+  }));
+
+  vi.mock("/src/services/authService", () => ({
+    logout: mocks.logout,
+  }));
+
   test("should render", () => {
     render(<Navigator />, { wrapper: GlobalProviders });
     expect(true).toBeTruthy();
@@ -38,5 +51,28 @@ describe("Navigator component", () => {
 
     await userEvent.click(notesLink);
     screen.getAllByText("notes page");
+  });
+
+  test("should logout", async () => {
+    render(
+      <>
+        <AuthRoute showContent>
+          <Navigator />
+        </AuthRoute>
+
+        <Routes>
+          <Route path="" element={<span>main page</span>} />
+          <Route path={ROUTES.AUTH.LOGIN} element={<span>login page</span>} />
+        </Routes>
+      </>,
+      { wrapper: GlobalProviders }
+    );
+
+    const logoutButton = screen.getByText("Log out");
+    await userEvent.click(logoutButton);
+    await waitFor(() => {
+      expect(mocks.logout).toBeCalled();
+    });
+    await screen.findByText("login page");
   });
 });

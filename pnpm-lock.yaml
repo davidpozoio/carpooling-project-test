@@ -11,6 +11,9 @@ dependencies:
   axios:
     specifier: ^1.6.5
     version: 1.6.5
+  blocky-front:
+    specifier: 'link:'
+    version: 'link:'
   draft-js:
     specifier: ^0.11.7
     version: 0.11.7(react-dom@18.2.0)(react@18.2.0)

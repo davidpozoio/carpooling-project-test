@@ -7,6 +7,7 @@ const NoteRouter = (
   <>
     <Route path="" element={<NoteList />} />
     <Route path={ROUTES.NOTES.EDITOR} element={<EditorNote />} />
+    <Route path={ROUTES.NOTES.TRASH} element={<NoteList trashBean />} />
   </>
 );
 

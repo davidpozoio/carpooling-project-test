@@ -45,7 +45,7 @@ describe("Header component", () => {
     expect(links.length).toBe(0);
   });
 
-  test("should Blocky logotype redirect to main notes when I in notes page", async () => {
+  test("should Blocky logotype redirect to main notes when I am in notes page", async () => {
     render(
       <MemoryRouter>
         <Header path="/notes" />

@@ -13,4 +13,6 @@ export function auth() {
   return axios.get(`${environment.HOST_BACK}/auth/me`) as Promise<unknown>;
 }
 
-export default { login, auth };
+export function logout() {
+  return axios.get<{ message: string }>(`${environment.HOST_BACK}/auth/logout`);
+}
