@@ -160,4 +160,72 @@ describe("Editor component", () => {
       expect(mocks.patchNote).toHaveBeenCalled();
     });
   });
+
+  test("should show message It can't update this note, please restore it", async () => {
+    mocks.getNoteById.mockImplementation(() => {
+      return Promise.resolve({
+        data: {
+          note: { title: "note 2", content: "lorem", id: 1 },
+        },
+      });
+    });
+
+    mocks.patchNote.mockImplementation(() =>
+      Promise.reject({
+        response: {
+          data: {
+            message: "it can't update a note that is deleting",
+            code: "E1000",
+          },
+        },
+      })
+    );
+
+    render(
+      <>
+        <EditorNote />
+      </>,
+      { wrapper: GlobalProviders }
+    );
+
+    await waitFor(() => {
+      expect(mocks.getNoteById).toHaveBeenCalled();
+    });
+    const editorTitle = await screen.findByText("note 2");
+    screen.debug();
+    await userEvent.click(editorTitle);
+    await userEvent.keyboard("wasd");
+    await waitFor(() => {
+      expect(mocks.patchNote).toHaveBeenCalled();
+    });
+    screen.getByText("It can't update this note, please restore it");
+  });
+
+  test("should show message note not found when note is a deleted note", async () => {
+    mocks.getNoteById.mockImplementation(() =>
+      Promise.resolve({
+        data: {
+          note: {
+            id: 1,
+            title: "note 1",
+            content: "lorem",
+            is_deleting: true,
+          },
+        },
+      })
+    );
+
+    render(
+      <>
+        <EditorNote />
+      </>,
+      { wrapper: GlobalProviders }
+    );
+    await screen.findByText("Note not found");
+    const titleNote = screen.queryByText("note 1");
+    const contentNote = screen.queryByText("content");
+
+    expect(titleNote).not.toBeInTheDocument();
+    expect(contentNote).not.toBeInTheDocument();
+  });
 });

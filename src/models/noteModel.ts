@@ -9,6 +9,7 @@ export type NotePatchContent = Optional<NoteContent> & { id: number };
 
 export interface NoteGetDto extends NoteContent {
   id: number;
+  is_deleting?: boolean;
 }
 
 export interface NotePostDto extends NoteContent {

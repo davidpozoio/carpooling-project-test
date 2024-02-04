@@ -51,7 +51,6 @@ describe("Form component", () => {
 
     render(
       <Form onSubmit={formState.onSubmit} fields={{ name: "" }}>
-        {" "}
         <Input
           name="name"
           errors={{ required: { value: true, message: "name is required" } }}

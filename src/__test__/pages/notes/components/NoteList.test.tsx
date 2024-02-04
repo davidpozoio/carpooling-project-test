@@ -5,16 +5,28 @@ import { GlobalProviders } from "../../../App.test";
 import NoteList from "../../../../pages/notes/components/NoteList";
 import ROUTES from "../../../../consts/routes";
 import userEvent from "@testing-library/user-event";
+import { useAppStore } from "../../../../store/store";
 
 describe("NoteList component", () => {
   const mocks = vi.hoisted(() => ({
     getMyNotes: vi.fn(),
     deleteNote: vi.fn(() => Promise.resolve({ message: "note deleted" })),
+    markNoteAsDeleted: vi.fn(() =>
+      Promise.resolve({ message: "deleted state changed successfully" })
+    ),
+    createNote: vi.fn(),
+    cancelAllPostQueries: vi.fn(),
+  }));
+
+  vi.mock("/src/environment/config.ts", () => ({
+    cancelAllPostQueries: mocks.cancelAllPostQueries,
   }));
 
   vi.mock("/src/services/noteService", () => ({
     getMyNotes: mocks.getMyNotes,
     deleteNote: mocks.deleteNote,
+    markNoteAsDeleted: mocks.markNoteAsDeleted,
+    createNote: mocks.createNote,
   }));
 
   test("should render", () => {
@@ -164,5 +176,111 @@ describe("NoteList component", () => {
 
     const note1 = screen.queryByText("note1");
     expect(note1).not.toBeInTheDocument();
+  });
+
+  test("should delete note from list and transport to trash list", async () => {
+    mocks.getMyNotes.mockImplementation(() =>
+      Promise.resolve({
+        data: {
+          notes: [
+            { id: 1, title: "note1", content: "content1" },
+            { id: 2, title: "note2", content: "lorem" },
+          ],
+        },
+      })
+    );
+
+    render(
+      <>
+        <Link to={ROUTES.NOTES.ME}>normal list</Link>
+        <Link to={ROUTES.NOTES.TRASH}>trash list</Link>
+        <Routes>
+          <Route path="" element={<span>main page</span>} />
+          <Route path={ROUTES.NOTES.ME} element={<NoteList />} />
+          <Route path={ROUTES.NOTES.TRASH} element={<NoteList trashBean />} />
+        </Routes>
+      </>,
+      { wrapper: GlobalProviders }
+    );
+
+    const normalList = screen.getByText("normal list");
+    const trashList = screen.getByText("trash list");
+
+    await userEvent.click(normalList);
+    const optionsNote1 = screen.getAllByTestId("options")[0];
+    await userEvent.click(optionsNote1);
+    screen.debug();
+    const markAsDeleted = screen.getByText("Delete");
+    await userEvent.click(markAsDeleted);
+    await waitFor(() => {
+      expect(mocks.markNoteAsDeleted).toHaveBeenCalled();
+    });
+
+    const note1 = screen.queryByText("note1");
+    expect(note1).not.toBeInTheDocument();
+    await userEvent.click(trashList);
+
+    screen.getByText("note1");
+  });
+
+  test("should show Trash empty message", async () => {
+    mocks.getMyNotes.mockImplementation(() =>
+      Promise.resolve({
+        data: {
+          notes: [],
+        },
+      })
+    );
+
+    render(<NoteList trashBean />, { wrapper: GlobalProviders });
+
+    await waitFor(() => {
+      expect(mocks.getMyNotes).toHaveBeenCalled();
+    });
+
+    screen.getByText("Trash empty");
+  });
+
+  test("should keep creating note when I change page", async () => {
+    useAppStore.setState({ isCreatingNote: true });
+    render(
+      <>
+        <Link to={ROUTES.NOTES.ME}>normal list</Link>
+        <Link to={ROUTES.NOTES.TRASH}>trash list</Link>
+        <Routes>
+          <Route path="" element={<span>main page</span>} />
+          <Route path={ROUTES.NOTES.ME} element={<NoteList />} />
+          <Route
+            path={ROUTES.NOTES.TRASH}
+            element={<NoteList trashBean={true} />}
+          />
+        </Routes>
+      </>,
+      { wrapper: GlobalProviders }
+    );
+
+    const noteList = screen.getByText("normal list");
+    const trashList = screen.getByText("trash list");
+
+    await userEvent.click(noteList);
+    let creationMenu = screen
+      .getByText("Create a new note")
+      .closest("div") as HTMLElement;
+    let createButton = screen.getByText<HTMLButtonElement>("Creating...");
+    expect(creationMenu.style.display).toBe("flex");
+    expect(createButton.disabled).toBeTruthy();
+
+    await userEvent.click(trashList);
+    screen.getByText("Trash");
+    expect(creationMenu.style.display).toBe("none");
+
+    await userEvent.click(noteList);
+    creationMenu = screen
+      .getByText("Create a new note")
+      .closest("div") as HTMLElement;
+    createButton = screen.getByText<HTMLButtonElement>("Creating...");
+    expect(creationMenu.style.display).toBe("flex");
+    expect(createButton.disabled).toBeTruthy();
+    screen.debug();
   });
 });

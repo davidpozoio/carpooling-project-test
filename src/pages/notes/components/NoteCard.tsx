@@ -1,12 +1,8 @@
-import { useNavigate } from "react-router-dom";
 import { NoteGetDto } from "../../../models/noteModel";
-import ROUTES from "../../../consts/routes";
 import Options from "../../../components/Options";
-import { MouseEventHandler } from "react";
 import useToggle from "../../../hooks/useToggle";
-import { useMutation, useQueryClient } from "react-query";
-import { deleteNote } from "../../../services/noteService";
-import CACHE_KEYS from "../../../consts/cache-keys";
+import useNoteCard from "../hooks/useNoteCard";
+import { useAppStore } from "../../../store/store";
 
 interface NoteCardProps {
   note: NoteGetDto;
@@ -14,38 +10,15 @@ interface NoteCardProps {
 }
 
 const NoteCard = ({ note, trashBean = false }: NoteCardProps) => {
-  const navigate = useNavigate();
   const { toggle, setFalse, handleToggle } = useToggle(false);
 
-  const queryClient = useQueryClient();
-  const { mutate } = useMutation({
-    mutationFn: (id: number) => deleteNote(id),
-    onSuccess: () => {
-      queryClient.setQueryData(
-        [CACHE_KEYS.NOTE_LIST, !!trashBean],
-        (oldData?: NoteGetDto[]) => {
-          if (!oldData) return [];
-          return oldData.filter((oldNote) => oldNote.id != note.id);
-        }
-      );
-    },
-  });
-
-  const handleClick: MouseEventHandler<HTMLDivElement> = (e) => {
-    e.stopPropagation();
-    if (!trashBean)
-      navigate(ROUTES.NOTES.EDITORID(note.id), { state: { note } });
-  };
-
-  const handleDelete = () => {};
-
-  const handleDeletePermanently = () => {
-    mutate(note.id);
-  };
+  const { handleClick, handleDelete, handleDeletePermanently, handleRestore } =
+    useNoteCard(note, trashBean);
+  const selectDeletingNote = useAppStore((state) => state.selectDeletingNote);
 
   return (
     <div
-      onClick={handleClick}
+      onClick={selectDeletingNote(note.id)?.isDeleting ? () => {} : handleClick}
       style={{
         width: 250,
         height: 250,
@@ -53,6 +26,15 @@ const NoteCard = ({ note, trashBean = false }: NoteCardProps) => {
         backgroundColor: "beige",
       }}
     >
+      {selectDeletingNote(note.id)?.isDeleting && (
+        <span style={{ backgroundColor: "red" }}>
+          {trashBean
+            ? selectDeletingNote(note.id)?.isDeletingPermanently
+              ? "Deleting note..."
+              : "Restoring note..."
+            : "Deleting note..."}
+        </span>
+      )}
       <button
         data-testid="options"
         onClick={(e) => {
@@ -70,8 +52,8 @@ const NoteCard = ({ note, trashBean = false }: NoteCardProps) => {
         }}
         values={[
           {
-            name: "Delete",
-            onClick: handleDelete,
+            name: trashBean ? "Restore note" : "Delete",
+            onClick: trashBean ? handleRestore : handleDelete,
           },
           {
             name: "Delete permanently",

@@ -4,6 +4,7 @@ import NoteCard from "./NoteCard";
 import ModalNoteMenu from "./ModalNoteMenu";
 import useToggle from "../../../hooks/useToggle";
 import CACHE_KEYS from "../../../consts/cache-keys";
+import { useAppStore } from "../../../store/store";
 
 interface NoteListProps {
   trashBean?: boolean;
@@ -11,12 +12,13 @@ interface NoteListProps {
 
 const NoteList = ({ trashBean }: NoteListProps) => {
   const { toggle, setTrue, setFalse } = useToggle(false);
-  const { data: notes, isFetching } = useQuery(
-    [CACHE_KEYS.NOTE_LIST, !!trashBean],
-    () => getMyNotes(!!trashBean).then((res) => res.data.notes),
-    {
-      refetchOnWindowFocus: false,
-    }
+  const isCreatingNote = useAppStore((state) => state.isCreatingNote);
+  const { data: notes } = useQuery(
+    [
+      CACHE_KEYS.NOTE_LIST.ME,
+      trashBean ? CACHE_KEYS.NOTE_LIST.TRASH : CACHE_KEYS.NOTE_LIST.NORMAL,
+    ],
+    () => getMyNotes(!!trashBean).then((res) => res.data.notes)
   );
 
   const addNote = () => {
@@ -29,10 +31,16 @@ const NoteList = ({ trashBean }: NoteListProps) => {
 
   return (
     <>
-      <ModalNoteMenu show={toggle} onClose={handleClose} />
+      <ModalNoteMenu
+        show={(toggle && !trashBean) || (isCreatingNote && !trashBean)}
+        onClose={handleClose}
+      />
       <h2>{trashBean ? "Trash" : "My notes"}</h2>
-      <span>fetching: {String(isFetching)}</span>
-      {notes?.length === 0 && <span>There is no notes yet, create one!</span>}
+      {notes?.length === 0 && (
+        <span>
+          {trashBean ? "Trash empty" : "There is no notes yet, create one!"}
+        </span>
+      )}
       {notes?.map((note) => (
         <NoteCard key={note.id} note={note} trashBean={!!trashBean} />
       ))}

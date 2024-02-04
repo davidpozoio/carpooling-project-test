@@ -5,6 +5,7 @@ import { GlobalProviders } from "../../../App.test";
 import userEvent from "@testing-library/user-event";
 import { Route, Routes } from "react-router-dom";
 import ROUTES from "../../../../consts/routes";
+import { useAppStore } from "../../../../store/store";
 
 describe("NoteCard component", () => {
   const mocks = vi.hoisted(() => ({
@@ -13,10 +14,14 @@ describe("NoteCard component", () => {
         message: "note deleted",
       })
     ),
+    markNoteAsDeleted: vi.fn(),
+    restoreNote: vi.fn(),
   }));
 
   vi.mock("/src/services/noteService", () => ({
     deleteNote: mocks.deleteNote,
+    markNoteAsDeleted: mocks.markNoteAsDeleted,
+    restoreNote: mocks.restoreNote,
   }));
 
   test("should render", () => {
@@ -101,6 +106,43 @@ describe("NoteCard component", () => {
     screen.getByText("Delete permanently");
   });
 
+  test("should change delete option to restore when is no trashBeanMode", async () => {
+    render(
+      <NoteCard
+        trashBean={true}
+        note={{ id: 1, title: "note1", content: "lorem" }}
+      />,
+      {
+        wrapper: GlobalProviders,
+      }
+    );
+    const optionsButton = screen.getByTestId("options");
+
+    await userEvent.click(optionsButton);
+
+    screen.getByText("Restore note");
+    screen.getByText("Delete permanently");
+  });
+
+  test("should restore note", async () => {
+    render(
+      <NoteCard
+        trashBean={true}
+        note={{ id: 1, title: "note1", content: "lorem" }}
+      />,
+      {
+        wrapper: GlobalProviders,
+      }
+    );
+    const optionsButton = screen.getByTestId("options");
+
+    await userEvent.click(optionsButton);
+
+    const restore = screen.getByText("Restore note");
+    await userEvent.click(restore);
+    expect(mocks.restoreNote).toHaveBeenCalled();
+  });
+
   test("should delete note permanently", async () => {
     render(<NoteCard note={{ id: 1, title: "note1", content: "lorem" }} />, {
       wrapper: GlobalProviders,
@@ -112,5 +154,76 @@ describe("NoteCard component", () => {
     const deleteButton = screen.getByText("Delete permanently");
     await userEvent.click(deleteButton);
     expect(mocks.deleteNote).toHaveBeenCalled();
+  });
+
+  test("should mark as deleted", async () => {
+    render(<NoteCard note={{ id: 1, title: "note1", content: "lorem" }} />, {
+      wrapper: GlobalProviders,
+    });
+    const optionsButton = screen.getByTestId("options");
+
+    await userEvent.click(optionsButton);
+
+    const deleteButton = screen.getByText("Delete");
+    await userEvent.click(deleteButton);
+    expect(mocks.markNoteAsDeleted).toHaveBeenCalled();
+  });
+
+  test("should show loading state when is deleting", async () => {
+    useAppStore.setState({
+      notes: [{ id: 1, isDeleting: true }],
+    });
+    render(<NoteCard note={{ id: 1, title: "note1", content: "lorem" }} />, {
+      wrapper: GlobalProviders,
+    });
+    screen.getByText("Deleting note...");
+  });
+
+  test("should not show loading state", async () => {
+    useAppStore.setState({
+      notes: [{ id: 1, isDeleting: false }],
+    });
+    render(<NoteCard note={{ id: 1, title: "note1", content: "lorem" }} />, {
+      wrapper: GlobalProviders,
+    });
+    const message = screen.queryByText("Deleting note...");
+    expect(message).not.toBeInTheDocument();
+  });
+
+  test("should show Restoring note... when is in trashBean mode", () => {
+    useAppStore.setState({
+      notes: [{ id: 1, isDeleting: true }],
+    });
+    render(
+      <NoteCard trashBean note={{ id: 1, title: "note1", content: "lorem" }} />,
+      {
+        wrapper: GlobalProviders,
+      }
+    );
+    screen.getByText("Restoring note...");
+  });
+
+  test("should not redirect to editor when is deleting note", async () => {
+    useAppStore.setState({
+      notes: [{ id: 1, isDeleting: true }],
+    });
+    render(
+      <>
+        <NoteCard note={{ id: 1, title: "note1", content: "lorem" }} />
+        <Routes>
+          <Route
+            path={ROUTES.NOTES.EDITORID(1)}
+            element={<span>editor note</span>}
+          />
+        </Routes>
+      </>,
+      {
+        wrapper: GlobalProviders,
+      }
+    );
+    const noteCard = screen.getByText("note1").closest("div") as HTMLElement;
+    await userEvent.click(noteCard);
+    expect(screen.queryByText("editor note")).not.toBeInTheDocument();
+    
   });
 });

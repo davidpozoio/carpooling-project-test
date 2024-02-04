@@ -1,5 +1,3 @@
-import { QueryClient } from "react-query";
-
 export const config = {
   MODE: import.meta.env.VITE_MODE,
 };
@@ -11,4 +9,10 @@ export const environment = {
       : import.meta.env.VITE_HOST_DEV,
 };
 
-export const client = new QueryClient();
+export const globalController = {
+  postQueries: new AbortController(),
+};
+
+export function cancelAllPostQueries() {
+  globalController.postQueries.abort();
+}

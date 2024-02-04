@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import ROUTES from "../../consts/routes";
 import { useMutation, useQuery } from "react-query";
 import CACHE_KEYS from "../../consts/cache-keys";
+import ERROR_CODES from "../../consts/errorCode";
 
 interface EditorNoteProps {
   note?: NoteGetDto;
@@ -17,10 +18,11 @@ interface EditorNoteProps {
 const EditorNote = ({ note }: EditorNoteProps) => {
   const { data: noteData, isDataPassed } = useLocationData<NoteGetDto>(
     "note",
-    note || { id: 1, title: "default", content: "default" }
+    note || { id: 1, title: "loading...", content: "loading..." }
   );
   const { id } = useParams();
   const [errorStatus, setErrorStatus] = useState(0);
+  const [errorCode, setErrorCode] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     window.history.replaceState({}, "", ROUTES.NOTES.EDITORID(Number(id)));
@@ -28,6 +30,9 @@ const EditorNote = ({ note }: EditorNoteProps) => {
 
   const { mutate } = useMutation({
     mutationFn: (data: NotePatchContent) => patchNote(data),
+    onError: (error: { response: { data: { code: string } } }) => {
+      setErrorCode(error?.response?.data?.code);
+    },
   });
 
   const handleTitle = useDebounce((text: string) => {
@@ -44,7 +49,7 @@ const EditorNote = ({ note }: EditorNoteProps) => {
 
   const content = useEditor(noteData.content, handleContent.debounce);
 
-  const { isError } = useQuery({
+  const { isError, data } = useQuery({
     queryKey: [CACHE_KEYS.NOTE],
     queryFn: () => {
       if (!isDataPassed) {
@@ -68,16 +73,30 @@ const EditorNote = ({ note }: EditorNoteProps) => {
 
   return (
     <>
-      {!isDataPassed && isError && <span>Note not found</span>}
+      {(!isDataPassed && isError) ||
+      data?.data.note.is_deleting ||
+      errorCode ? (
+        <span>
+          {errorCode === ERROR_CODES.E1000.CODE
+            ? "It can't update this note, please restore it"
+            : "Note not found"}
+        </span>
+      ) : (
+        <>
+          <div data-testid="title-editor" style={{ border: "1px solid black" }}>
+            <Editor editorState={title.editor} onChange={title.handleEditor} />
+          </div>
+          <div style={{ border: "1px solid black" }}>
+            <Editor
+              editorState={content.editor}
+              onChange={content.handleEditor}
+            />
+          </div>
+        </>
+      )}
       {!isDataPassed && isError && errorStatus === 500 && (
         <span>There was an error, retry?</span>
       )}
-      <div data-testid="title-editor" style={{ border: "1px solid black" }}>
-        <Editor editorState={title.editor} onChange={title.handleEditor} />
-      </div>
-      <div style={{ border: "1px solid black" }}>
-        <Editor editorState={content.editor} onChange={content.handleEditor} />
-      </div>
     </>
   );
 };

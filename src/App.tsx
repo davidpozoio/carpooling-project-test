@@ -9,14 +9,18 @@ import PageNotFound from "./pages/error/PageNotFound";
 import NoteRouter from "./pages/notes/NoteRouter";
 import AuthRoute from "./guards/AuthRoute";
 import { Suspense, lazy } from "react";
+import { QueryClientProvider } from "react-query";
+import useQueryConfig from "./environment/useQueryConfig";
+import LoadingPage from "./components/LoadingPage";
 
 const Note = lazy(() => import("./pages/notes/Note"));
 
 function App() {
   const location = useLocation();
+  const { queryClient } = useQueryConfig();
 
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <Header path={location.pathname} />
 
       <Routes>
@@ -40,7 +44,7 @@ function App() {
           path={ROUTES.NOTES.ME}
           element={
             <AuthRoute>
-              <Suspense fallback={<div>loading content...</div>}>
+              <Suspense fallback={<LoadingPage />}>
                 <Note />
               </Suspense>
             </AuthRoute>
@@ -50,7 +54,7 @@ function App() {
         </Route>
         <Route path="*" element={<PageNotFound />} />
       </Routes>
-    </>
+    </QueryClientProvider>
   );
 }
 

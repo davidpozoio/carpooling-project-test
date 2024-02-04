@@ -1,7 +1,11 @@
 import axios from "axios";
+import { globalController } from "../environment/config";
 
 axios.interceptors.request.use((config) => {
   config.withCredentials = true;
+  if (config.method === "post") {
+    config.signal = globalController.postQueries.signal;
+  }
   return config;
 });
 

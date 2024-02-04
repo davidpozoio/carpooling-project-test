@@ -4,13 +4,14 @@ import { describe, expect, test } from "vitest";
 import { Link, MemoryRouter } from "react-router-dom";
 import App from "../App";
 import { QueryClientProvider } from "react-query";
-import { client } from "../environment/config";
 import { ReactNode } from "react";
+import useQueryConfig from "../environment/useQueryConfig";
 
 export const GlobalProviders = ({ children }: { children: ReactNode }) => {
+  const { queryClient } = useQueryConfig();
   return (
     <MemoryRouter>
-      <QueryClientProvider client={client}>{children}</QueryClientProvider>
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     </MemoryRouter>
   );
 };

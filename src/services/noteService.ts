@@ -37,3 +37,15 @@ export function deleteNote(id: number) {
     `${environment.HOST_BACK}/notes/${id}`
   );
 }
+
+export function markNoteAsDeleted(id: number) {
+  return axios.patch<{ message: string }>(
+    `${environment.HOST_BACK}/notes/${id}/true`
+  );
+}
+
+export function restoreNote(id: number) {
+  return axios.patch<{ message: string }>(
+    `${environment.HOST_BACK}/notes/${id}/false`
+  );
+}

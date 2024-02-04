@@ -2,13 +2,13 @@ import { Link } from "react-router-dom";
 import Form from "./components/Form";
 import Input from "./components/Input";
 import ROUTES from "../../consts/routes";
-import { login } from "../../services/authService";
+import { signup } from "../../services/authService";
 import useAutomaticLogin from "../../hooks/useAutomaticLogin";
 import { LoginDto } from "../../models/authModel";
 
 const Signup = () => {
   const { mutate } = useAutomaticLogin<LoginDto>({
-    fetchFn: (data) => login(data),
+    fetchFn: (data) => signup(data),
     redirectWhenSuccess: ROUTES.NOTES.ME,
   });
 
@@ -54,7 +54,7 @@ const Signup = () => {
           }}
           confirmPassword={true}
         />
-        <button type="submit">submit</button>
+        <button type="submit">Sign up!</button>
         <Link to={ROUTES.AUTH.LOGIN}>Log in</Link>
       </Form>
     </>

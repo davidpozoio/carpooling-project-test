@@ -9,6 +9,13 @@ export function login(loginUser: LoginDto) {
   ) as Promise<{ message: string }>;
 }
 
+export function signup(signupUser: LoginDto) {
+  return axios.post<{ message: string }>(
+    `${environment.HOST_BACK}/auth/signup`,
+    signupUser
+  );
+}
+
 export function auth() {
   return axios.get(`${environment.HOST_BACK}/auth/me`) as Promise<unknown>;
 }
