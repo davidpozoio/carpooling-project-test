@@ -8,19 +8,25 @@ interface UseAutomaticLoginProps<T> {
   fetchFn: FetchFn<T>;
   redirectWhenError?: string;
   redirectWhenSuccess?: string;
+  onError?: (data: unknown) => void;
+  onSettled?: () => void;
+  onSuccess?: () => void;
 }
 
 const useAutomaticLogin = <T>({
   fetchFn,
   redirectWhenError,
   redirectWhenSuccess,
+  onError,
+  onSettled,
+  onSuccess,
 }: UseAutomaticLoginProps<T>) => {
   const navigate = useNavigate();
   const setAuth = useAppStore((state) => state.setAuth);
-
-  const { mutate } = useMutation({
+  const { mutate, isLoading, isError, isPaused } = useMutation({
     mutationFn: fetchFn,
-    onError: () => {
+    onError: (data) => {
+      if (onError) onError(data);
       setAuth(false);
       if (redirectWhenError) {
         navigate(redirectWhenError);
@@ -31,9 +37,11 @@ const useAutomaticLogin = <T>({
       if (redirectWhenSuccess) {
         navigate(redirectWhenSuccess);
       }
+      if (onSuccess) onSuccess();
     },
+    onSettled,
   });
 
-  return { mutate };
+  return { mutate, isLoading, isError, isPaused };
 };
 export default useAutomaticLogin;

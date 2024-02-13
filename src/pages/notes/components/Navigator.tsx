@@ -1,17 +1,29 @@
-import { Link } from "react-router-dom";
 import ROUTES from "../../../consts/routes";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { logout } from "../../../services/authService";
 import { useAppStore } from "../../../store/store";
+import CACHE_KEYS from "../../../consts/cache-keys";
+import BlockLink from "../../../components/BlockLink";
 
 const Navigator = () => {
+  const queryClient = useQueryClient();
   const setAuth = useAppStore((state) => state.setAuth);
-  const { mutate } = useMutation({
+  const setBlockLinks = useAppStore((state) => state.setBlockLinks);
+  const { mutate, isLoading } = useMutation({
     mutationFn: () => logout(),
-    onSuccess: () => setAuth(false),
+    onSuccess: () => {
+      setBlockLinks(false);
+      setAuth(false);
+      queryClient.setQueryData([CACHE_KEYS.NOTE], () => []);
+      queryClient.setQueryData([CACHE_KEYS.NOTE_LIST], () => []);
+    },
+    onError: () => {
+      setBlockLinks(false);
+    },
   });
 
   const handleLogout = () => {
+    setBlockLinks(true);
     mutate();
   };
 
@@ -19,13 +31,15 @@ const Navigator = () => {
     <nav>
       <ul>
         <li>
-          <Link to={ROUTES.NOTES.ME}>My notes</Link>
+          <BlockLink to={ROUTES.NOTES.ME}>My notes</BlockLink>
         </li>
         <li>
-          <Link to={ROUTES.NOTES.TRASH}>Trash</Link>
+          <BlockLink to={ROUTES.NOTES.TRASH}>Trash</BlockLink>
         </li>
         <li>
-          <button onClick={handleLogout}>Log out</button>
+          <button onClick={handleLogout} disabled={isLoading}>
+            Log out
+          </button>
         </li>
       </ul>
     </nav>

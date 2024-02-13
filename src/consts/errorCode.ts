@@ -11,6 +11,18 @@ const ERROR_CODES = {
     CODE: "E1003",
     MESSAGE: "note not found",
   },
+  E2000: {
+    CODE: "E2000",
+    MESSAGE: "the username is incorrect",
+  },
+  E2001: {
+    CODE: "E2001",
+    MESSAGE: "the password is incorrect",
+  },
+  E2002: {
+    CODE: "E2003",
+    MESSAGE: "the username is already taken",
+  },
 };
 
 export default ERROR_CODES;

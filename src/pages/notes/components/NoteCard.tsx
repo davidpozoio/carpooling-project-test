@@ -2,7 +2,7 @@ import { NoteGetDto } from "../../../models/noteModel";
 import Options from "../../../components/Options";
 import useToggle from "../../../hooks/useToggle";
 import useNoteCard from "../hooks/useNoteCard";
-import { useAppStore } from "../../../store/store";
+import { selectDeletingNote, useAppStore } from "../../../store/store";
 
 interface NoteCardProps {
   note: NoteGetDto;
@@ -14,11 +14,13 @@ const NoteCard = ({ note, trashBean = false }: NoteCardProps) => {
 
   const { handleClick, handleDelete, handleDeletePermanently, handleRestore } =
     useNoteCard(note, trashBean);
-  const selectDeletingNote = useAppStore((state) => state.selectDeletingNote);
+  const deletingNote = useAppStore((state) =>
+    selectDeletingNote(state, note.id)
+  );
 
   return (
     <div
-      onClick={selectDeletingNote(note.id)?.isDeleting ? () => {} : handleClick}
+      onClick={deletingNote?.isDeleting ? () => {} : handleClick}
       style={{
         width: 250,
         height: 250,
@@ -26,10 +28,10 @@ const NoteCard = ({ note, trashBean = false }: NoteCardProps) => {
         backgroundColor: "beige",
       }}
     >
-      {selectDeletingNote(note.id)?.isDeleting && (
+      {deletingNote?.isDeleting && (
         <span style={{ backgroundColor: "red" }}>
           {trashBean
-            ? selectDeletingNote(note.id)?.isDeletingPermanently
+            ? deletingNote?.isDeletingPermanently
               ? "Deleting note..."
               : "Restoring note..."
             : "Deleting note..."}

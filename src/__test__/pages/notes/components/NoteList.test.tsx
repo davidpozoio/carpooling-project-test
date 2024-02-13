@@ -283,4 +283,33 @@ describe("NoteList component", () => {
     expect(createButton.disabled).toBeTruthy();
     screen.debug();
   });
+
+  test("should show message 'Sorry, there was an error to get the notes, try again!'", async () => {
+    mocks.getMyNotes.mockImplementation(() =>
+      Promise.reject({
+        response: {
+          status: 500,
+        },
+      })
+    );
+
+    render(<NoteList />, { wrapper: GlobalProviders });
+
+    await screen.findByText(
+      "Sorry, there was an error to get the notes, try again!"
+    );
+    const reloadButton = screen.getByText("Reload notes");
+    mocks.getMyNotes.mockImplementation(() =>
+      Promise.resolve({
+        data: {
+          notes: [],
+        },
+      })
+    );
+    expect(mocks.getMyNotes).toBeCalled();
+
+    await userEvent.click(reloadButton);
+
+    expect(screen.queryByText("Reload notes")).not.toBeInTheDocument();
+  });
 });

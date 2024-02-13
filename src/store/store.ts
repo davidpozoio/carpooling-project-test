@@ -18,12 +18,17 @@ interface NoteListState {
     noteId: number,
     isDeletingPermanently?: boolean
   ) => void;
-  selectDeletingNote: (id: number) => NoteState | undefined;
   isCreatingNote: boolean;
   setIsCreatingNote: (state: boolean) => void;
 }
 
-interface AppState extends UserState, NoteListState {}
+interface AppState extends UserState, NoteListState {
+  blockLinks: boolean;
+  setBlockLinks: (state: boolean) => void;
+}
+
+export const selectDeletingNote = (state: AppState, noteId: number) =>
+  state.notes.find((note) => note.id === noteId);
 
 export const useAppStore = create<AppState>((set, get) => ({
   isAuth: false,
@@ -31,9 +36,6 @@ export const useAppStore = create<AppState>((set, get) => ({
     set({ isAuth: auth });
   },
   notes: [],
-  selectDeletingNote: (noteId) => {
-    return get().notes.find((note) => note.id === noteId);
-  },
   setIsDeletingState: (isDeleting, id, isDeletingPermanently = false) => {
     const state = get();
     if (!isDeleting) {
@@ -45,5 +47,9 @@ export const useAppStore = create<AppState>((set, get) => ({
   isCreatingNote: false,
   setIsCreatingNote: (state) => {
     set({ isCreatingNote: state });
+  },
+  blockLinks: false,
+  setBlockLinks: (state) => {
+    set({ blockLinks: state });
   },
 }));

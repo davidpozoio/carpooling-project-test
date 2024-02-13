@@ -6,10 +6,12 @@ const useAppForm = <T extends FieldValues>(submit: (data: T) => void) => {
     register,
     formState: { errors },
     watch,
+    setError,
+    clearErrors,
   } = useForm<T>({ mode: "all" });
   const onSubmit = handleSubmit(submit);
 
-  return { register, onSubmit, errors, watch };
+  return { register, onSubmit, errors, watch, setError, clearErrors };
 };
 
 export default useAppForm;

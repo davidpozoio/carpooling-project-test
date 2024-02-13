@@ -228,4 +228,19 @@ describe("Editor component", () => {
     expect(titleNote).not.toBeInTheDocument();
     expect(contentNote).not.toBeInTheDocument();
   });
+
+  test("should redirect to the notes page", async () => {
+    render(
+      <>
+        <EditorNote />
+        <Routes>
+          <Route path={ROUTES.NOTES.ME} element={<span>notes page</span>} />
+        </Routes>
+      </>,
+      { wrapper: GlobalProviders }
+    );
+    const backButton = screen.getByTestId("back-button");
+    await userEvent.click(backButton);
+    screen.getByText("notes page");
+  });
 });

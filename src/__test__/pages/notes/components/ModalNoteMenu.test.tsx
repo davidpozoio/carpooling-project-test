@@ -94,4 +94,20 @@ describe("ModalMenuNote component", () => {
     await userEvent.click(button);
     expect(onCloseSpy).toHaveBeenCalled();
   });
+
+  test("should message 'Sorry, there was an error to create the note, try again!'", async () => {
+    mocks.createNote.mockImplementation(() =>
+      Promise.reject({
+        response: {
+          status: 500,
+        },
+      })
+    );
+    render(<ModalNoteMenu show={true} />, { wrapper: GlobalProviders });
+    const createButton = screen.getByText("create!");
+    await userEvent.click(createButton);
+    screen.getByText(
+      "Sorry, there was an error to create the note, try again!"
+    );
+  });
 });

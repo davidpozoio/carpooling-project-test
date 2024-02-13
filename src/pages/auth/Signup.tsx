@@ -1,15 +1,47 @@
-import { Link } from "react-router-dom";
 import Form from "./components/Form";
 import Input from "./components/Input";
 import ROUTES from "../../consts/routes";
 import { signup } from "../../services/authService";
 import useAutomaticLogin from "../../hooks/useAutomaticLogin";
-import { LoginDto } from "../../models/authModel";
+import { ErrorAuthResponse, LoginDto } from "../../models/authModel";
+import { useState } from "react";
+import { ErrorMessage } from "../../models/formModel";
+import ERROR_CODES from "../../consts/errorCode";
+import useHttpError from "../../hooks/useHttpError";
+import { useQueryClient } from "react-query";
+import BlockLink from "../../components/BlockLink";
+import { useAppStore } from "../../store/store";
 
 const Signup = () => {
-  const { mutate } = useAutomaticLogin<LoginDto>({
+  const [errors, setErrors] = useState<ErrorMessage[]>([]);
+  const { errorMessage, setError } = useHttpError();
+  const queryClient = useQueryClient();
+  const setBlockLinks = useAppStore((state) => state.setBlockLinks);
+
+  const { mutate, isLoading } = useAutomaticLogin<LoginDto>({
     fetchFn: (data) => signup(data),
     redirectWhenSuccess: ROUTES.NOTES.ME,
+    onError: (error) => {
+      const response = error as {
+        code: string;
+        response: { data: ErrorAuthResponse; status: number };
+      };
+      setError(response);
+      const codeError = response.response.data.code;
+      if (codeError === ERROR_CODES.E2002.CODE) {
+        setErrors((prev) => [
+          ...prev,
+          {
+            inputName: "username",
+            message: "the username has already been taken",
+          },
+        ]);
+      }
+    },
+    onSettled: () => {
+      setBlockLinks(false);
+      queryClient.clear();
+    },
   });
 
   return (
@@ -18,8 +50,10 @@ const Signup = () => {
       <Form
         fields={{ username: "", password: "", confirmPassword: "" }}
         onSubmit={(data) => {
+          setBlockLinks(true);
           mutate({ username: data["username"], password: data["password"] });
         }}
+        errors={errors}
       >
         <Input
           label="Username:"
@@ -54,8 +88,11 @@ const Signup = () => {
           }}
           confirmPassword={true}
         />
-        <button type="submit">Sign up!</button>
-        <Link to={ROUTES.AUTH.LOGIN}>Log in</Link>
+        <span>{errorMessage}</span>
+        <button type="submit" disabled={isLoading}>
+          Sign up!
+        </button>
+        <BlockLink to={ROUTES.AUTH.LOGIN}>Log in</BlockLink>
       </Form>
     </>
   );

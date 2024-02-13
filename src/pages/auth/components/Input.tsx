@@ -20,6 +20,7 @@ const Input = ({
   confirmPassword = false,
 }: InputProps) => {
   const { register, errors: errorsState, watch } = useContext(FormContext);
+
   const fields = register && {
     ...register(
       name,

@@ -5,6 +5,7 @@ import ModalNoteMenu from "./ModalNoteMenu";
 import useToggle from "../../../hooks/useToggle";
 import CACHE_KEYS from "../../../consts/cache-keys";
 import { useAppStore } from "../../../store/store";
+import { useState } from "react";
 
 interface NoteListProps {
   trashBean?: boolean;
@@ -13,12 +14,28 @@ interface NoteListProps {
 const NoteList = ({ trashBean }: NoteListProps) => {
   const { toggle, setTrue, setFalse } = useToggle(false);
   const isCreatingNote = useAppStore((state) => state.isCreatingNote);
-  const { data: notes } = useQuery(
+  const [error, setError] = useState<string | undefined>(undefined);
+  const {
+    data: notes,
+    refetch,
+    isLoading,
+  } = useQuery(
     [
       CACHE_KEYS.NOTE_LIST.ME,
       trashBean ? CACHE_KEYS.NOTE_LIST.TRASH : CACHE_KEYS.NOTE_LIST.NORMAL,
     ],
-    () => getMyNotes(!!trashBean).then((res) => res.data.notes)
+    () => getMyNotes(!!trashBean).then((res) => res.data.notes),
+    {
+      onError: (err) => {
+        const error = err as { response: { status: number } };
+        if (error?.response?.status === 500) {
+          setError("Sorry, there was an error to get the notes, try again!");
+        }
+      },
+      onSuccess: () => {
+        setError(undefined);
+      },
+    }
   );
 
   const addNote = () => {
@@ -40,6 +57,14 @@ const NoteList = ({ trashBean }: NoteListProps) => {
         <span>
           {trashBean ? "Trash empty" : "There is no notes yet, create one!"}
         </span>
+      )}
+      {error && (
+        <>
+          <span>{error}</span>
+          <button onClick={() => refetch()} disabled={isLoading}>
+            Reload notes
+          </button>
+        </>
       )}
       {notes?.map((note) => (
         <NoteCard key={note.id} note={note} trashBean={!!trashBean} />
