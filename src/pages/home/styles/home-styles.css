@@ -1,0 +1,31 @@
+.content-home {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+
+  padding-top: 50px;
+}
+
+.ilustration {
+  position: relative;
+}
+
+.ilustration > * {
+  width: 100%;
+}
+
+.draw {
+  padding-top: 160px;
+  width: 400px;
+  object-fit: fill;
+}
+
+.initial-wave {
+  position: absolute;
+  top: -200px;
+  left: -250px;
+  z-index: -1;
+  width: 200%;
+}

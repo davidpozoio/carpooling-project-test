@@ -9,6 +9,7 @@ const useQueryConfig = () => {
 
   const handleError = (error: unknown) => {
     const errorAxios = error as ErrorAxios;
+
     if (errorAxios?.response?.status === 401) {
       setAuth(false);
     }

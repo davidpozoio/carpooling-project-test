@@ -22,13 +22,18 @@ const AuthRoute = ({
     fetchFn: () => auth(),
     redirectWhenError: defaultRedirectWhenError ? ROUTES.AUTH.LOGIN : undefined,
     redirectWhenSuccess: redirectWhenSuccess,
+    onSettled: () => {
+      setIsAuthenticating(false);
+    },
   });
+  const setIsAuthenticating = useAppStore((state) => state.setIsAuthenticating);
 
   useEffect(() => {
     if (!isAuth) {
+      setIsAuthenticating(true);
       mutate({});
     }
-  }, [isAuth, mutate]);
+  }, [isAuth, mutate, setIsAuthenticating]);
 
   if (showContent) return children;
   return <>{isAuth && children}</>;

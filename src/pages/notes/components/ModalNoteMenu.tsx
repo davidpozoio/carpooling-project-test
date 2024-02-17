@@ -6,6 +6,7 @@ import ROUTES from "../../../consts/routes";
 import CACHE_KEYS from "../../../consts/cache-keys";
 import { useAppStore } from "../../../store/store";
 import { useState } from "react";
+import "../styles/modal-note-menu-styles.css";
 
 interface ModalNoteMenuProps {
   show?: boolean;
@@ -60,19 +61,36 @@ const ModalNoteMenu = ({
 
   return (
     <div
+      className="overlay"
       style={{
         display: show ? "flex" : "none",
-        position: "fixed",
       }}
     >
-      <h3>Create a new note</h3>
-      <p>{errorMessage}</p>
-      <button onClick={handleClick} disabled={isCreatingNote}>
-        {isCreatingNote ? "Creating..." : "create!"}
-      </button>
-      <button onClick={onClose} disabled={isCreatingNote}>
-        cancel
-      </button>
+      <div
+        style={{
+          display: show ? "flex" : "none",
+        }}
+        className="modal-menu"
+      >
+        <h3 className="subtitle">Create a new note</h3>
+        <p>{errorMessage}</p>
+        <section className="button-container">
+          <button
+            className="button --dark --bordered --full-extension"
+            onClick={handleClick}
+            disabled={isCreatingNote}
+          >
+            {isCreatingNote ? "Creating..." : "create!"}
+          </button>
+          <button
+            className="button --bordered --full-extension"
+            onClick={onClose}
+            disabled={isCreatingNote}
+          >
+            cancel
+          </button>
+        </section>
+      </div>
     </div>
   );
 };

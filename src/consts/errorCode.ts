@@ -20,7 +20,7 @@ const ERROR_CODES = {
     MESSAGE: "the password is incorrect",
   },
   E2002: {
-    CODE: "E2003",
+    CODE: "E2002",
     MESSAGE: "the username is already taken",
   },
 };

@@ -3,6 +3,8 @@ import Options from "../../../components/Options";
 import useToggle from "../../../hooks/useToggle";
 import useNoteCard from "../hooks/useNoteCard";
 import { selectDeletingNote, useAppStore } from "../../../store/store";
+import { MenuOutlined, LoadingOutlined } from "@ant-design/icons";
+import "../styles/note-card-styles.css";
 
 interface NoteCardProps {
   note: NoteGetDto;
@@ -19,52 +21,52 @@ const NoteCard = ({ note, trashBean = false }: NoteCardProps) => {
   );
 
   return (
-    <div
-      onClick={deletingNote?.isDeleting ? () => {} : handleClick}
-      style={{
-        width: 250,
-        height: 250,
-        overflow: "hidden",
-        backgroundColor: "beige",
-      }}
-    >
-      {deletingNote?.isDeleting && (
-        <span style={{ backgroundColor: "red" }}>
-          {trashBean
-            ? deletingNote?.isDeletingPermanently
-              ? "Deleting note..."
-              : "Restoring note..."
-            : "Deleting note..."}
-        </span>
-      )}
-      <button
-        data-testid="options"
-        onClick={(e) => {
-          e.stopPropagation();
-          handleToggle();
-        }}
+    <div className="card-container">
+      <span className="card-shadow"></span>
+      <div
+        onClick={deletingNote?.isDeleting ? () => {} : handleClick}
+        className="note-card"
       >
-        ...
-      </button>
-      <Options
-        data-testid="options"
-        show={toggle}
-        onClose={() => {
-          setFalse();
-        }}
-        values={[
-          {
-            name: trashBean ? "Restore note" : "Delete",
-            onClick: trashBean ? handleRestore : handleDelete,
-          },
-          {
-            name: "Delete permanently",
-            onClick: handleDeletePermanently,
-          },
-        ]}
-      />
-      <span>{note.title}</span>
-      <p>{note.content}</p>
+        {deletingNote?.isDeleting && (
+          <span className="deleting-overlay">
+            <LoadingOutlined style={{ fontSize: "30px" }} />
+            {trashBean
+              ? deletingNote?.isDeletingPermanently
+                ? "Deleting note..."
+                : "Restoring note..."
+              : "Deleting note..."}
+          </span>
+        )}
+        <button
+          data-testid="options"
+          onClick={(e) => {
+            e.stopPropagation();
+            handleToggle();
+          }}
+          className="options-button"
+        >
+          <MenuOutlined />
+        </button>
+        <Options
+          data-testid="options"
+          show={toggle}
+          onClose={() => {
+            setFalse();
+          }}
+          values={[
+            {
+              name: trashBean ? "Restore note" : "Delete",
+              onClick: trashBean ? handleRestore : handleDelete,
+            },
+            {
+              name: "Delete permanently",
+              onClick: handleDeletePermanently,
+            },
+          ]}
+        />
+        <span className="card-title">{note.title}</span>
+        <p className="card-content">{note.content}</p>
+      </div>
     </div>
   );
 };

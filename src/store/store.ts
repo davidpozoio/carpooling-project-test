@@ -25,6 +25,8 @@ interface NoteListState {
 interface AppState extends UserState, NoteListState {
   blockLinks: boolean;
   setBlockLinks: (state: boolean) => void;
+  isAuthenticating: boolean;
+  setIsAuthenticating: (state: boolean) => void;
 }
 
 export const selectDeletingNote = (state: AppState, noteId: number) =>
@@ -51,5 +53,9 @@ export const useAppStore = create<AppState>((set, get) => ({
   blockLinks: false,
   setBlockLinks: (state) => {
     set({ blockLinks: state });
+  },
+  isAuthenticating: false,
+  setIsAuthenticating: (state) => {
+    set({ isAuthenticating: state });
   },
 }));

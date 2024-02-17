@@ -11,12 +11,17 @@ import useHttpError from "../../hooks/useHttpError";
 import { useQueryClient } from "react-query";
 import BlockLink from "../../components/BlockLink";
 import { useAppStore } from "../../store/store";
+import "./styles/pages-styles.css";
+import useTitle from "../../hooks/useTitle";
 
 const Signup = () => {
   const [errors, setErrors] = useState<ErrorMessage[]>([]);
   const { errorMessage, setError } = useHttpError();
   const queryClient = useQueryClient();
   const setBlockLinks = useAppStore((state) => state.setBlockLinks);
+  const isAuthenticating = useAppStore((state) => state.isAuthenticating);
+
+  useTitle("signup");
 
   const { mutate, isLoading } = useAutomaticLogin<LoginDto>({
     fetchFn: (data) => signup(data),
@@ -45,9 +50,19 @@ const Signup = () => {
   });
 
   return (
-    <>
-      <h2>Sign up</h2>
+    <div className="container content-grid">
+      <img
+        className="wave first"
+        src="/src/assets/wave-2.svg"
+        alt="wave figure"
+      />
+      <img
+        className="wave second"
+        src="/src/assets/wave-3.svg"
+        alt="wave figure"
+      />
       <Form
+        className="form-container center-content"
         fields={{ username: "", password: "", confirmPassword: "" }}
         onSubmit={(data) => {
           setBlockLinks(true);
@@ -55,6 +70,7 @@ const Signup = () => {
         }}
         errors={errors}
       >
+        <h2 className="gradient-title --medium-title">Sign up</h2>
         <Input
           label="Username:"
           placeholder="put an username"
@@ -89,12 +105,18 @@ const Signup = () => {
           confirmPassword={true}
         />
         <span>{errorMessage}</span>
-        <button type="submit" disabled={isLoading}>
+        <button
+          type="submit"
+          disabled={isLoading || isAuthenticating}
+          className="button --dark --full-extension"
+        >
           Sign up!
         </button>
-        <BlockLink to={ROUTES.AUTH.LOGIN}>Log in</BlockLink>
+        <BlockLink className="button --full-extension" to={ROUTES.AUTH.LOGIN}>
+          Log in
+        </BlockLink>
       </Form>
-    </>
+    </div>
   );
 };
 export default Signup;

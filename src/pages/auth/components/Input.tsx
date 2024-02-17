@@ -1,6 +1,7 @@
 import { HTMLInputTypeAttribute, useContext } from "react";
 import { FormContext } from "./Form";
 import { FieldValues, RegisterOptions } from "react-hook-form";
+import "../styles/input-styles.css";
 
 interface InputProps {
   label: string;
@@ -35,18 +36,23 @@ const Input = ({
   };
 
   return (
-    <>
-      <label htmlFor={`I${name}`}>{label}</label>
+    <div className="input-container">
+      <label htmlFor={`I${name}`} className="label">
+        {label}
+      </label>
       <input
         id={`I${name}`}
         type={type}
         placeholder={placeholder}
         {...fields}
+        className="input"
       />
       {errorsState
-        ? errorsState[name] && <span>{`${errorsState[name]?.message}`}</span>
-        : {}}
-    </>
+        ? errorsState[name] && (
+            <span className="error-message">{`${errorsState[name]?.message}`}</span>
+          )
+        : ""}
+    </div>
   );
 };
 export default Input;

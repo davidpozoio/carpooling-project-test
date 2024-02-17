@@ -12,6 +12,7 @@
     "dev-test": "vite"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.3.0",
     "@types/draft-js": "^0.11.17",
     "axios": "^1.6.5",
     "blocky-front": "link:",

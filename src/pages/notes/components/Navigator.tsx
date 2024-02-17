@@ -4,6 +4,12 @@ import { logout } from "../../../services/authService";
 import { useAppStore } from "../../../store/store";
 import CACHE_KEYS from "../../../consts/cache-keys";
 import BlockLink from "../../../components/BlockLink";
+import {
+  CopyOutlined,
+  DeleteOutlined,
+  LogoutOutlined,
+} from "@ant-design/icons";
+import "../styles/navigator-styles.css";
 
 const Navigator = () => {
   const queryClient = useQueryClient();
@@ -28,17 +34,28 @@ const Navigator = () => {
   };
 
   return (
-    <nav>
+    <nav className="--nav navigator">
       <ul>
         <li>
-          <BlockLink to={ROUTES.NOTES.ME}>My notes</BlockLink>
+          <BlockLink to={ROUTES.NOTES.ME} className="nav-link">
+            <CopyOutlined className="icon" />
+            <span>My notes</span>
+          </BlockLink>
         </li>
         <li>
-          <BlockLink to={ROUTES.NOTES.TRASH}>Trash</BlockLink>
+          <BlockLink to={ROUTES.NOTES.TRASH} className="nav-link">
+            <DeleteOutlined className="icon" />
+            Trash
+          </BlockLink>
         </li>
         <li>
-          <button onClick={handleLogout} disabled={isLoading}>
-            Log out
+          <button
+            className="nav-link logout"
+            onClick={handleLogout}
+            disabled={isLoading}
+          >
+            <LogoutOutlined className="icon" />
+            <span>Log out</span>
           </button>
         </li>
       </ul>

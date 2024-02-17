@@ -10,11 +10,16 @@ import ERROR_CODES from "../../consts/errorCode";
 import { useQueryClient } from "react-query";
 import { useAppStore } from "../../store/store";
 import BlockLink from "../../components/BlockLink";
+import "./styles/pages-styles.css";
+import useTitle from "../../hooks/useTitle";
 
 const Login = () => {
   const [errors, setErrors] = useState<ErrorMessage[]>([]);
   const queryClient = useQueryClient();
   const setBlokcLinks = useAppStore((state) => state.setBlockLinks);
+  const isAuthenticating = useAppStore((state) => state.isAuthenticating);
+
+  useTitle("login");
 
   const { mutate, isLoading } = useAutomaticLogin<LoginDto>({
     fetchFn: (data) => login(data),
@@ -48,9 +53,19 @@ const Login = () => {
   });
 
   return (
-    <>
-      <h2>Log in</h2>
+    <div className="container content-grid">
+      <img
+        className="wave first"
+        src="/src/assets/wave-2.svg"
+        alt="wave figure"
+      />
+      <img
+        className="wave second"
+        src="/src/assets/wave-3.svg"
+        alt="wave figure"
+      />
       <Form
+        className="form-container center-content"
         fields={{ username: "", password: "" }}
         onSubmit={(data) => {
           setBlokcLinks(true);
@@ -58,6 +73,7 @@ const Login = () => {
         }}
         errors={errors}
       >
+        <h2 className="gradient-title --medium-title">Log in</h2>
         <Input
           label="Username: "
           name="username"
@@ -76,12 +92,18 @@ const Login = () => {
           }}
         />
 
-        <button type="submit" disabled={isLoading}>
+        <button
+          className="button --dark --full-extension"
+          type="submit"
+          disabled={isLoading || isAuthenticating}
+        >
           Log in!
         </button>
-        <BlockLink to={ROUTES.AUTH.SIGNUP}>sign up</BlockLink>
+        <BlockLink className="button --full-extension" to={ROUTES.AUTH.SIGNUP}>
+          sign up
+        </BlockLink>
       </Form>
-    </>
+    </div>
   );
 };
 

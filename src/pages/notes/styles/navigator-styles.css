@@ -1,0 +1,43 @@
+.navigator {
+  background-color: var(--primary-color);
+}
+
+.navigator ul {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  padding-top: 20px;
+}
+
+.nav-link {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-weight: 500;
+
+  color: var(--secondary-color);
+}
+
+.logout {
+  width: fit-content;
+
+  background-color: transparent;
+  border: none;
+  font-size: 16px;
+  font-family: "Lexend";
+  padding: 0;
+  text-align: start;
+  padding: 10px 20px 10px 0;
+  border-radius: 0 100px 100px 0;
+
+  transition: text-decoration 0.5s;
+}
+
+.logout:hover {
+  text-decoration: underline;
+}
+
+.icon {
+  font-size: 18px;
+}

@@ -1,0 +1,15 @@
+.back-button {
+  margin-top: 20px;
+  font-size: 30px;
+  width: fit-content;
+}
+
+.editor-grid {
+  display: grid;
+  grid-template-rows: 50px 1fr;
+  gap: 20px;
+}
+
+.content-editor {
+  font-size: 20px;
+}

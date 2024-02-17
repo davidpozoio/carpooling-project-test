@@ -7,12 +7,14 @@ import {
 } from "react-hook-form";
 import useAppForm from "../../../hooks/useAppForm";
 import { ErrorMessage } from "../../../models/formModel";
+import "../styles/form-styles.css";
 
 interface FormProps {
   fields: Record<string, string>;
   children: ReactNode;
   onSubmit: (data: FormProps["fields"]) => void;
   errors?: ErrorMessage[];
+  className?: string;
 }
 
 interface FormContextValues {
@@ -25,7 +27,7 @@ interface FormContextValues {
 
 export const FormContext = createContext<FormContextValues>({});
 
-const Form = ({ fields, children, onSubmit, errors }: FormProps) => {
+const Form = ({ fields, children, onSubmit, errors, className }: FormProps) => {
   const formState = useAppForm<typeof fields>(onSubmit);
   const [prevErrors, setPrevErrors] = useState<ErrorMessage[]>([]);
 
@@ -46,7 +48,9 @@ const Form = ({ fields, children, onSubmit, errors }: FormProps) => {
 
   return (
     <FormContext.Provider value={{ ...formState, fields }}>
-      <form onSubmit={formState.onSubmit}>{children}</form>
+      <form className={"form " + className} onSubmit={formState.onSubmit}>
+        {children}
+      </form>
     </FormContext.Provider>
   );
 };

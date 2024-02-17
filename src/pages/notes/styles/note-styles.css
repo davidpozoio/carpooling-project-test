@@ -1,0 +1,28 @@
+.note-grid {
+  position: relative;
+
+  display: grid;
+  grid-template-columns: [full-width-start] 30px [nav-content-start] 150px [nav-content-end] 30px [content-start] 1fr [content-end] 30px [full-width-end];
+
+  height: calc(100vh - 70px);
+}
+
+.note-grid > * {
+  grid-column: nav-content-start / content-end;
+}
+
+.note-grid > .--nav {
+  grid-column: full-width-start / content-start;
+}
+
+.note-grid > .--main-content {
+  display: grid;
+  grid-template-rows: 100px 1fr;
+
+  grid-column: content-start / full-width-end;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  scrollbar-color: var(--primary-color) var(--secondary-color);
+  scrollbar-width: thin;
+}

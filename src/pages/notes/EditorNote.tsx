@@ -3,7 +3,7 @@ import { NoteGetDto, NotePatchContent } from "../../models/noteModel";
 import useLocationData from "../../hooks/useLocationData";
 import useEditor from "../../hooks/useEditor";
 import useDebounce from "../../hooks/useDebounce";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { getNoteById, patchNote } from "../../services/noteService";
 import { useEffect, useState } from "react";
 import ROUTES from "../../consts/routes";
@@ -11,6 +11,10 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import CACHE_KEYS from "../../consts/cache-keys";
 import ERROR_CODES from "../../consts/errorCode";
 import { useAppStore } from "../../store/store";
+import { LeftOutlined } from "@ant-design/icons";
+import BlockLink from "../../components/BlockLink";
+import "./styles/editor-note-styles.css";
+import useTitle from "../../hooks/useTitle";
 
 interface EditorNoteProps {
   note?: NoteGetDto;
@@ -39,6 +43,8 @@ const EditorNote = ({ note }: EditorNoteProps) => {
     },
   });
 
+  useTitle(noteData.title);
+
   const handleTitle = useDebounce((text: string) => {
     queryClient.setQueryData(
       [CACHE_KEYS.NOTE_LIST.ME, CACHE_KEYS.NOTE_LIST.NORMAL],
@@ -61,13 +67,12 @@ const EditorNote = ({ note }: EditorNoteProps) => {
         });
       }
     );
-    console.log(text);
+
     setBlockLinks(false);
     mutate({ id: Number(id), title: text });
   }, 500);
 
   const handleContent = useDebounce((text: string) => {
-    console.log(text);
     queryClient.setQueryData(
       [CACHE_KEYS.NOTE_LIST.ME, CACHE_KEYS.NOTE_LIST.NORMAL],
       (oldData?: NoteGetDto[]) => {
@@ -126,10 +131,14 @@ const EditorNote = ({ note }: EditorNoteProps) => {
   });
 
   return (
-    <>
-      <Link to={ROUTES.NOTES.ME} data-testid="back-button">
-        x-
-      </Link>
+    <div className="--main-content note-grid">
+      <BlockLink
+        className="back-button gradient-title"
+        to={ROUTES.NOTES.ME}
+        testId="back-button"
+      >
+        <LeftOutlined />
+      </BlockLink>
       {(!isDataPassed && isError) ||
       data?.data?.note.is_deleting ||
       errorCode ? (
@@ -139,22 +148,25 @@ const EditorNote = ({ note }: EditorNoteProps) => {
             : "Note not found"}
         </span>
       ) : (
-        <>
-          <div data-testid="title-editor" style={{ border: "1px solid black" }}>
+        <div className="editor-grid">
+          <div
+            data-testid="title-editor"
+            className="gradient-title --small-title"
+          >
             <Editor editorState={title.editor} onChange={title.handleEditor} />
           </div>
-          <div style={{ border: "1px solid black" }}>
+          <div className="content-editor">
             <Editor
               editorState={content.editor}
               onChange={content.handleEditor}
             />
           </div>
-        </>
+        </div>
       )}
       {!isDataPassed && isError && errorStatus === 500 && (
         <span>There was an error, retry?</span>
       )}
-    </>
+    </div>
   );
 };
 export default EditorNote;

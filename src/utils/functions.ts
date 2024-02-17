@@ -3,3 +3,7 @@ export function delay(time: number) {
     setTimeout(resolve, time);
   });
 }
+
+export function setQuery(){
+  
+}

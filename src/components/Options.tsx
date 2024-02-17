@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import useOutsideAlerter from "../hooks/useOutsideAlerter";
+import "./styles/options-styles.css";
 
 interface OptionValues {
   name: string;
@@ -20,10 +21,11 @@ const Options = ({ onClose, show = true, values }: OptionsProps) => {
   if (!show) return;
 
   return (
-    <div ref={ref}>
+    <div ref={ref} className="option-container">
       {values.map((option, index) => {
         return (
           <button
+            className="option-item"
             key={index}
             onClick={(e) => {
               e.stopPropagation();
