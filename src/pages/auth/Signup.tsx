@@ -51,8 +51,8 @@ const Signup = () => {
 
   return (
     <div className="container content-grid">
-      <img className="wave first" src="/public/wave-2.svg" alt="wave figure" />
-      <img className="wave second" src="/public/wave-3.svg" alt="wave figure" />
+      <img className="wave first" src="/wave-2.svg" alt="wave figure" />
+      <img className="wave second" src="/wave-3.svg" alt="wave figure" />
       <Form
         className="form-container center-content"
         fields={{ username: "", password: "", confirmPassword: "" }}
