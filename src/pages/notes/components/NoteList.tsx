@@ -66,7 +66,7 @@ const NoteList = ({ trashBean }: NoteListProps) => {
           {trashBean ? "Trash empty" : "There is no notes yet, create one!"}
           <img
             className="no-notes-draw"
-            src="/src/assets/no-notes-draw.svg"
+            src="/public/no-notes-draw.svg"
             alt="without notes image"
           />
         </span>

@@ -17,14 +17,14 @@ const Home = () => {
           </BlockLink>
           <div className="ilustration full-width">
             <img
-              src="/src/assets/home-draw.svg"
+              src="/public/home-draw.svg"
               className="draw"
               alt="example ilustration"
               width="400"
               height="400"
             />
             <img
-              src="/src/assets/wave-1.svg"
+              src="/public/wave-1.svg"
               alt="wave figure"
               className="initial-wave"
               width="800"
