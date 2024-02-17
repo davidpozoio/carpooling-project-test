@@ -18,7 +18,7 @@
   width: 500px;
   height: 500px;
 
-  object-fit: cover;
+  object-fit: fill;
 }
 .second {
   align-self: flex-end;
@@ -27,5 +27,5 @@
 }
 
 .first {
-  top: calc(100% - 500px);
+  top: calc(100% - 430px);
 }
