@@ -61,7 +61,7 @@ const ModalNoteMenu = ({
 
   return (
     <div
-      className="overlay"
+      className="overlay opacity-transition"
       style={{
         display: show ? "flex" : "none",
       }}

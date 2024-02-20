@@ -150,13 +150,19 @@ const EditorNote = ({ note }: EditorNoteProps) => {
       ) : (
         <div className="editor-grid">
           <div
+            onClick={() => title.focus()}
             data-testid="title-editor"
-            className="gradient-title --small-title"
+            className="gradient-title --small-title title-editor"
           >
-            <Editor editorState={title.editor} onChange={title.handleEditor} />
-          </div>
-          <div className="content-editor">
             <Editor
+              ref={title.ref}
+              editorState={title.editor}
+              onChange={title.handleEditor}
+            />
+          </div>
+          <div onClick={() => content.focus()} className="content-editor">
+            <Editor
+              ref={content.ref}
               editorState={content.editor}
               onChange={content.handleEditor}
             />

@@ -6,10 +6,14 @@
 
 .editor-grid {
   display: grid;
-  grid-template-rows: 50px 1fr;
+  grid-template-rows: 1fr 10fr;
   gap: 20px;
 }
 
 .content-editor {
+  min-height: fit-content;
+  max-height: fit-content;
+
   font-size: 20px;
+  margin-bottom: 50px;
 }
