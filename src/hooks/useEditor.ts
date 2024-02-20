@@ -1,7 +1,9 @@
-import { ContentState, EditorState } from "draft-js";
-import { useState } from "react";
+import { ContentState, Editor, EditorState } from "draft-js";
+import { useRef, useState } from "react";
 
 const useEditor = (text = "", onChange?: (plaintText: string) => void) => {
+  const ref = useRef<Editor>(null);
+
   const [editor, setEditor] = useState(() =>
     EditorState.createWithContent(ContentState.createFromText(text))
   );
@@ -23,7 +25,13 @@ const useEditor = (text = "", onChange?: (plaintText: string) => void) => {
     );
   };
 
-  return { editor, handleEditor, setPlainText };
+  const focus = () => {
+    if (ref.current) {
+      ref.current.focus();
+    }
+  };
+
+  return { editor, handleEditor, setPlainText, focus, ref };
 };
 
 export default useEditor;

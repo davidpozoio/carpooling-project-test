@@ -62,13 +62,13 @@
 
 .button:disabled,
 .button[disabled] {
-  background-color: var(--primary-color-200) !important;
+  color: var(--primary-color-200);
+  border-color: var(--primary-color-200);
 }
 
-.button:disabled:has:not(.--dark),
-.button[disabled]:has:not(.--dark) {
-  background-color: var(--secondary-color) !important;
-  color: var(--primary-color-200);
+.button.--dark:disabled,
+.button.--dark[disabled] {
+  background-color: var(--primary-color-200) !important;
 }
 
 .button.--full-extension {
@@ -103,10 +103,33 @@ a.disable-link {
   color: var(--primary-color-200);
 }
 
+a.active {
+  transition: text-decoration 0.5s;
+  text-decoration: underline;
+}
+
+a.transitioning {
+  view-transition-name: "image-title";
+}
+
 a:hover {
   text-decoration: underline;
 }
 
 button:hover {
   cursor: pointer;
+}
+
+.opacity-transition {
+  animation: opacity-transition 0.2s normal ease-out;
+}
+
+@keyframes opacity-transition {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }

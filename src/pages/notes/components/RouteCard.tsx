@@ -30,7 +30,7 @@ const RouteCard = ({ route, trashBean = false }: NoteCardProps) => {
         className="note-card"
       >
         {deletingNote?.isDeleting && (
-          <span className="deleting-overlay">
+          <span className="deleting-overlay opacity-transition">
             <LoadingOutlined style={{ fontSize: "30px" }} />
             {trashBean
               ? deletingNote?.isDeletingPermanently

@@ -21,7 +21,7 @@ const Options = ({ onClose, show = true, values }: OptionsProps) => {
   if (!show) return;
 
   return (
-    <div ref={ref} className="option-container">
+    <div ref={ref} className="option-container opacity-transition">
       {values.map((option, index) => {
         return (
           <button
