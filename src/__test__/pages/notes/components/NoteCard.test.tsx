@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, test, vi } from "vitest";
-import NoteCard from "../../../../pages/notes/components/NoteCard";
+import NoteCard from "../../../../pages/notes/components/RouteCard";
 import { GlobalProviders } from "../../../App.test";
 import userEvent from "@testing-library/user-event";
 import { Route, Routes } from "react-router-dom";
@@ -224,6 +224,5 @@ describe("NoteCard component", () => {
     const noteCard = screen.getByText("note1").closest("div") as HTMLElement;
     await userEvent.click(noteCard);
     expect(screen.queryByText("editor note")).not.toBeInTheDocument();
-    
   });
 });

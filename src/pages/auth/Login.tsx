@@ -23,7 +23,7 @@ const Login = () => {
 
   const { mutate, isLoading } = useAutomaticLogin<LoginDto>({
     fetchFn: (data) => login(data),
-    redirectWhenSuccess: ROUTES.NOTES.ME,
+    redirectWhenSuccess: ROUTES.ROUTES.ME,
     onError: (error) => {
       console.log(error);
 
@@ -36,7 +36,7 @@ const Login = () => {
       if (codeError === ERROR_CODES.E2000.CODE) {
         setErrors((prev) => [
           ...prev,
-          { inputName: "username", message: "username is incorrect" },
+          { inputName: "email", message: "email is incorrect" },
         ]);
       }
       if (codeError === ERROR_CODES.E2001.CODE) {
@@ -70,20 +70,20 @@ const Login = () => {
       />
       <Form
         className="form-container center-content"
-        fields={{ username: "", password: "" }}
+        fields={{ email: "", password: "" }}
         onSubmit={(data) => {
           setBlokcLinks(true);
-          mutate({ username: data["username"], password: data["password"] });
+          mutate({ email: data["email"], password: data["password"] });
         }}
         errors={errors}
       >
         <h2 className="gradient-title --medium-title">Log in</h2>
         <Input
-          label="Username: "
-          name="username"
-          placeholder="put an username"
+          label="Email: "
+          name="email"
+          placeholder="put an email"
           errors={{
-            required: { value: true, message: "username is required*" },
+            required: { value: true, message: "email is required*" },
           }}
         />
         <Input

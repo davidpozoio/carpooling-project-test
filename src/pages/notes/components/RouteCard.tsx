@@ -1,23 +1,25 @@
-import { NoteGetDto } from "../../../models/noteModel";
 import Options from "../../../components/Options";
 import useToggle from "../../../hooks/useToggle";
 import useNoteCard from "../hooks/useNoteCard";
 import { selectDeletingNote, useAppStore } from "../../../store/store";
 import { MenuOutlined, LoadingOutlined } from "@ant-design/icons";
+import { RouteGetResponse } from "../../../models/routeMode";
 import "../styles/note-card-styles.css";
 
 interface NoteCardProps {
-  note: NoteGetDto;
+  route: RouteGetResponse;
   trashBean?: boolean;
 }
 
-const NoteCard = ({ note, trashBean = false }: NoteCardProps) => {
+const RouteCard = ({ route, trashBean = false }: NoteCardProps) => {
   const { toggle, setFalse, handleToggle } = useToggle(false);
 
-  const { handleClick, handleDelete, handleDeletePermanently, handleRestore } =
-    useNoteCard(note, trashBean);
+  const { handleClick, handleDeletePermanently } = useNoteCard(
+    route,
+    trashBean
+  );
   const deletingNote = useAppStore((state) =>
-    selectDeletingNote(state, note.id)
+    selectDeletingNote(state, route.id)
   );
 
   return (
@@ -32,9 +34,9 @@ const NoteCard = ({ note, trashBean = false }: NoteCardProps) => {
             <LoadingOutlined style={{ fontSize: "30px" }} />
             {trashBean
               ? deletingNote?.isDeletingPermanently
-                ? "Deleting note..."
-                : "Restoring note..."
-              : "Deleting note..."}
+                ? "Deleting route..."
+                : "Restoring route..."
+              : "Deleting route..."}
           </span>
         )}
         <button
@@ -55,19 +57,15 @@ const NoteCard = ({ note, trashBean = false }: NoteCardProps) => {
           }}
           values={[
             {
-              name: trashBean ? "Restore note" : "Delete",
-              onClick: trashBean ? handleRestore : handleDelete,
-            },
-            {
-              name: "Delete permanently",
+              name: "Delete",
               onClick: handleDeletePermanently,
             },
           ]}
         />
-        <span className="card-title">{note.title}</span>
-        <p className="card-content">{note.content}</p>
+        <span className="card-title">{route.name}</span>
+        <p className="card-content">{route.description}</p>
       </div>
     </div>
   );
 };
-export default NoteCard;
+export default RouteCard;

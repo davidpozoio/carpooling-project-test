@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, test } from "vitest";
 import { GlobalProviders } from "../App.test";
-import NoteCard from "../../pages/notes/components/NoteCard";
+import NoteCard from "../../pages/notes/components/RouteCard";
 import { Route, Routes } from "react-router-dom";
 import ROUTES from "../../consts/routes";
 import EditorNote from "../../pages/notes/EditorNote";

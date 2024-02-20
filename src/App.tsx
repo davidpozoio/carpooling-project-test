@@ -30,7 +30,7 @@ function App() {
           path={ROUTES.AUTH.ME}
           element={
             <AuthRoute
-              redirectWhenSuccess={ROUTES.NOTES.ME}
+              redirectWhenSuccess={ROUTES.ROUTES.ME}
               defaultRedirectWhenError={false}
               showContent
             >
@@ -41,7 +41,7 @@ function App() {
           {AuthRouter}
         </Route>
         <Route
-          path={ROUTES.NOTES.ME}
+          path={ROUTES.ROUTES.ME}
           element={
             <AuthRoute>
               <Suspense fallback={<LoadingPage />}>

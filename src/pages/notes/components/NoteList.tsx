@@ -1,6 +1,5 @@
 import { useQuery } from "react-query";
-import { getMyNotes } from "../../../services/noteService";
-import NoteCard from "./NoteCard";
+import RouteCard from "./RouteCard";
 import ModalNoteMenu from "./ModalNoteMenu";
 import useToggle from "../../../hooks/useToggle";
 import CACHE_KEYS from "../../../consts/cache-keys";
@@ -9,6 +8,7 @@ import { useState } from "react";
 import { PlusOutlined, LoadingOutlined } from "@ant-design/icons";
 import "../styles/note-list-styles.css";
 import useTitle from "../../../hooks/useTitle";
+import { getRoutes } from "../../../services/routeService";
 
 interface NoteListProps {
   trashBean?: boolean;
@@ -22,7 +22,7 @@ const NoteList = ({ trashBean }: NoteListProps) => {
   useTitle(trashBean ? "trash note list" : "note list");
 
   const {
-    data: notes,
+    data: routes,
     refetch,
     isLoading,
   } = useQuery(
@@ -30,12 +30,12 @@ const NoteList = ({ trashBean }: NoteListProps) => {
       CACHE_KEYS.NOTE_LIST.ME,
       trashBean ? CACHE_KEYS.NOTE_LIST.TRASH : CACHE_KEYS.NOTE_LIST.NORMAL,
     ],
-    () => getMyNotes(!!trashBean).then((res) => res.data.notes),
+    () => getRoutes(!!trashBean).then((res) => res.data),
     {
       onError: (err) => {
         const error = err as { response: { status: number } };
         if (error?.response?.status === 500) {
-          setError("Sorry, there was an error to get the notes, try again!");
+          setError("Sorry, there was an error to get the routes, try again!");
         }
       },
       onSuccess: () => {
@@ -59,9 +59,9 @@ const NoteList = ({ trashBean }: NoteListProps) => {
         onClose={handleClose}
       />
       <h2 className="gradient-title --medium-title note-list-title">
-        {trashBean ? "Trash" : "My notes"}
+        {trashBean ? "All routes" : "My routes"}
       </h2>
-      {notes?.length === 0 && (
+      {routes?.length === 0 && (
         <span>
           {trashBean ? "Trash empty" : "There is no notes yet, create one!"}
           <img
@@ -80,8 +80,8 @@ const NoteList = ({ trashBean }: NoteListProps) => {
         </>
       )}
       <section className="note-list">
-        {notes?.map((note) => (
-          <NoteCard key={note.id} note={note} trashBean={!!trashBean} />
+        {routes?.map((route) => (
+          <RouteCard key={route.id} route={route} trashBean={!!trashBean} />
         ))}
       </section>
 

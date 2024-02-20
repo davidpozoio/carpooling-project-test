@@ -4,10 +4,12 @@
 }
 
 .container {
+  padding-bottom: 50px;
+
   width: 100%;
   height: calc(100vh - 70px);
 
-  overflow: hidden;
+  overflow-y: auto;
 }
 
 .wave {

@@ -1,6 +1,13 @@
 export interface LoginDto {
-  username: string;
+  email: string;
   password: string;
+}
+
+export interface SignupDto extends LoginDto {
+  firstName: string;
+  lastName: string;
+  cellNumber: string;
+  indentification: string;
 }
 
 export interface ErrorAuthResponse {

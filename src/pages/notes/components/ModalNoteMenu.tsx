@@ -38,7 +38,7 @@ const ModalNoteMenu = ({
       );
       setIsCreatingNote(false);
 
-      navigate(ROUTES.NOTES.EDITORID(response.data.note.id), {
+      navigate(ROUTES.ROUTES.EDITORID(response.data.note.id), {
         state: { note },
       });
     },

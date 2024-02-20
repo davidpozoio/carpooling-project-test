@@ -3,7 +3,7 @@ import Input from "./components/Input";
 import ROUTES from "../../consts/routes";
 import { signup } from "../../services/authService";
 import useAutomaticLogin from "../../hooks/useAutomaticLogin";
-import { ErrorAuthResponse, LoginDto } from "../../models/authModel";
+import { ErrorAuthResponse, SignupDto } from "../../models/authModel";
 import { useState } from "react";
 import { ErrorMessage } from "../../models/formModel";
 import ERROR_CODES from "../../consts/errorCode";
@@ -23,9 +23,9 @@ const Signup = () => {
 
   useTitle("signup");
 
-  const { mutate, isLoading } = useAutomaticLogin<LoginDto>({
+  const { mutate, isLoading } = useAutomaticLogin<SignupDto>({
     fetchFn: (data) => signup(data),
-    redirectWhenSuccess: ROUTES.NOTES.ME,
+    redirectWhenSuccess: ROUTES.ROUTES.ME,
     onError: (error) => {
       const response = error as {
         code: string;
@@ -67,20 +67,72 @@ const Signup = () => {
       />
       <Form
         className="form-container center-content"
-        fields={{ username: "", password: "", confirmPassword: "" }}
+        fields={{
+          firstName: "",
+          lastName: "",
+          cellNumber: "",
+          identification: "",
+          email: "",
+          password: "",
+          confirmPassword: "",
+        }}
         onSubmit={(data) => {
           setBlockLinks(true);
-          mutate({ username: data["username"], password: data["password"] });
+          mutate({
+            firstName: data["firstName"],
+            lastName: data["lastName"],
+            cellNumber: data["cellNumber"],
+            indentification: data["identification"],
+            email: data["email"],
+            password: data["password"],
+          });
         }}
         errors={errors}
       >
         <h2 className="gradient-title --medium-title">Sign up</h2>
         <Input
-          label="Username:"
-          placeholder="put an username"
-          name="username"
+          label="First name:"
+          placeholder="put your name"
+          name="firstName"
           errors={{
-            required: { value: true, message: "username is required*" },
+            required: { value: true, message: "first name is required*" },
+          }}
+        />
+        <Input
+          label="Last name:"
+          placeholder="put your last name"
+          name="lastName"
+          errors={{
+            required: { value: true, message: "last name is required*" },
+          }}
+        />
+
+        <Input
+          label="Cell number:"
+          type="number"
+          placeholder="put your cell number"
+          name="cellNumber"
+          errors={{
+            required: { value: true, message: "cell number is required*" },
+          }}
+        />
+
+        <Input
+          label="Identification:"
+          type="number"
+          placeholder="put your identification"
+          name="identification"
+          errors={{
+            required: { value: true, message: "identification is required*" },
+          }}
+        />
+
+        <Input
+          label="Email:"
+          placeholder="put an email"
+          name="email"
+          errors={{
+            required: { value: true, message: "email is required*" },
           }}
         />
 

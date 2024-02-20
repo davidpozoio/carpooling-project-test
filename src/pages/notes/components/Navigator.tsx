@@ -37,15 +37,15 @@ const Navigator = () => {
     <nav className="--nav navigator">
       <ul>
         <li>
-          <BlockLink to={ROUTES.NOTES.ME} className="nav-link">
+          <BlockLink to={ROUTES.ROUTES.ME} className="nav-link">
             <CopyOutlined className="icon" />
-            <span>My notes</span>
+            <span>My routes</span>
           </BlockLink>
         </li>
         <li>
-          <BlockLink to={ROUTES.NOTES.TRASH} className="nav-link">
+          <BlockLink to={ROUTES.ROUTES.TRASH} className="nav-link">
             <DeleteOutlined className="icon" />
-            Trash
+            All routes
           </BlockLink>
         </li>
         <li>

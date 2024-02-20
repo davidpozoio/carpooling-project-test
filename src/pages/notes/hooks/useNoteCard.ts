@@ -10,8 +10,9 @@ import { NoteGetDto } from "../../../models/noteModel";
 import { MouseEventHandler } from "react";
 import ROUTES from "../../../consts/routes";
 import { useAppStore } from "../../../store/store";
+import { RouteGetResponse } from "../../../models/routeMode";
 
-const useNoteCard = (note: NoteGetDto, trashBean: boolean) => {
+const useNoteCard = (route: RouteGetResponse, trashBean: boolean) => {
   const navigate = useNavigate();
   const setIsDeletingState = useAppStore((state) => state.setIsDeletingState);
   const queryClient = useQueryClient();
@@ -26,13 +27,13 @@ const useNoteCard = (note: NoteGetDto, trashBean: boolean) => {
         ],
         (oldData?: NoteGetDto[]) => {
           if (!oldData) return [];
-          return oldData.filter((oldNote) => oldNote.id != note.id);
+          return oldData.filter((oldNote) => oldNote.id != route.id);
         }
       );
-      setIsDeletingState(false, note.id, false);
+      setIsDeletingState(false, route.id, false);
     },
     onError: () => {
-      setIsDeletingState(false, note.id, false);
+      setIsDeletingState(false, route.id, false);
     },
   });
 
@@ -43,21 +44,21 @@ const useNoteCard = (note: NoteGetDto, trashBean: boolean) => {
         [CACHE_KEYS.NOTE_LIST.ME, CACHE_KEYS.NOTE_LIST.NORMAL],
         (oldData?: NoteGetDto[]) => {
           if (!oldData) return [];
-          return oldData.filter((oldNote) => oldNote.id != note.id);
+          return oldData.filter((oldNote) => oldNote.id != route.id);
         }
       );
 
-      queryClient.setQueriesData(
+      /*     queryClient.setQueriesData(
         [CACHE_KEYS.NOTE_LIST.ME, CACHE_KEYS.NOTE_LIST.TRASH],
         (oldData?: NoteGetDto[]) => {
           if (!oldData) return [];
-          return [...oldData, note];
+          return [...oldData, route];
         }
-      );
-      setIsDeletingState(false, note.id);
+      ); */
+      setIsDeletingState(false, route.id);
     },
     onError: () => {
-      setIsDeletingState(false, note.id);
+      setIsDeletingState(false, route.id);
     },
   });
 
@@ -68,43 +69,43 @@ const useNoteCard = (note: NoteGetDto, trashBean: boolean) => {
         [CACHE_KEYS.NOTE_LIST.ME, CACHE_KEYS.NOTE_LIST.TRASH],
         (oldData?: NoteGetDto[]) => {
           if (!oldData) return [];
-          return oldData.filter((oldNote) => oldNote.id != note.id);
+          return oldData.filter((oldNote) => oldNote.id != route.id);
         }
       );
 
-      queryClient.setQueriesData(
+      /*    queryClient.setQueriesData(
         [CACHE_KEYS.NOTE_LIST.ME, CACHE_KEYS.NOTE_LIST.NORMAL],
         (oldData?: NoteGetDto[]) => {
           if (!oldData) return [];
-          return [...oldData, note];
+          return [...oldData, route];
         }
-      );
-      setIsDeletingState(false, note.id);
+      ); */
+      setIsDeletingState(false, route.id);
     },
     onError: () => {
-      setIsDeletingState(false, note.id);
+      setIsDeletingState(false, route.id);
     },
   });
 
   const handleClick: MouseEventHandler<HTMLDivElement> = (e) => {
     e.stopPropagation();
     if (!trashBean)
-      navigate(ROUTES.NOTES.EDITORID(note.id), { state: { note } });
+      navigate(ROUTES.ROUTES.EDITORID(route.id), { state: { route } });
   };
 
   const handleRestore = () => {
-    setIsDeletingState(true, note.id);
-    restore.mutate(note.id);
+    setIsDeletingState(true, route.id);
+    restore.mutate(route.id);
   };
 
   const handleDelete = () => {
-    setIsDeletingState(true, note.id);
-    markAsDeleted.mutate(note.id);
+    setIsDeletingState(true, route.id);
+    markAsDeleted.mutate(route.id);
   };
 
   const handleDeletePermanently = () => {
-    setIsDeletingState(true, note.id, true);
-    deletePermanently.mutate(note.id);
+    setIsDeletingState(true, route.id, true);
+    deletePermanently.mutate(route.id);
   };
 
   return {

@@ -13,10 +13,10 @@ const Header = ({ path }: HeaderProps) => {
       <div className="content">
         <button className="options">...</button>
         <BlockLink
-          to={path.match("/notes") ? ROUTES.NOTES.ME : ROUTES.HOME.ME}
+          to={path.match("/notes") ? ROUTES.ROUTES.ME : ROUTES.HOME.ME}
           className="gradient-title"
         >
-          Blocky
+          Carpooling
         </BlockLink>
         {path === ROUTES.HOME.ME && (
           <nav className="nav">

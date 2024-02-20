@@ -10,8 +10,8 @@ const Home = () => {
     <>
       <section className="content-grid">
         <div className="center-content content-home">
-          <h1 className="gradient-title --large-title">Blocky</h1>
-          <p>Create and read your notes in a single app</p>
+          <h1 className="gradient-title --large-title">Carpooling</h1>
+          <p>Create your routes in a single app</p>
           <BlockLink className="button" to={ROUTES.AUTH.LOGIN}>
             Get started!
           </BlockLink>

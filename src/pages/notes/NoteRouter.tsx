@@ -12,7 +12,7 @@ const NoteRouter = (
   <>
     <Route path="" element={<NoteList />} />
     <Route
-      path={ROUTES.NOTES.EDITOR}
+      path={ROUTES.ROUTES.EDITOR}
       element={
         <Suspense fallback={<LoadingPage />}>
           <EditorNote />
@@ -20,7 +20,7 @@ const NoteRouter = (
       }
     />
     <Route
-      path={ROUTES.NOTES.TRASH}
+      path={ROUTES.ROUTES.TRASH}
       element={
         <Suspense fallback={<LoadingPage />}>
           <NoteList trashBean />

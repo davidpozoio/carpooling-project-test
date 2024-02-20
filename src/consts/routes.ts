@@ -11,8 +11,8 @@ const ROUTES = {
       return `${this.ME}/signup`;
     },
   },
-  NOTES: {
-    ME: "/notes",
+  ROUTES: {
+    ME: "/routes",
     get TRASH() {
       return `${this.ME}/trash`;
     },

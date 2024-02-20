@@ -1,6 +1,6 @@
 import { environment } from "../environment/config";
 import axios from "../interceptor/globalInterceptor";
-import { LoginDto } from "../models/authModel";
+import { LoginDto, SignupDto } from "../models/authModel";
 
 export function login(loginUser: LoginDto) {
   return axios.post(
@@ -9,9 +9,9 @@ export function login(loginUser: LoginDto) {
   ) as Promise<{ message: string }>;
 }
 
-export function signup(signupUser: LoginDto) {
+export function signup(signupUser: SignupDto) {
   return axios.post<{ message: string }>(
-    `${environment.HOST_BACK}/auth/signup`,
+    `${environment.HOST_BACK}/users`,
     signupUser
   );
 }

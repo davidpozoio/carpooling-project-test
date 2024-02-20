@@ -3,7 +3,7 @@ import { describe, expect, test, vi } from "vitest";
 import EditorNote from "../../../pages/notes/EditorNote";
 import { GlobalProviders } from "../../App.test";
 import { Route, Routes } from "react-router-dom";
-import NoteCard from "../../../pages/notes/components/NoteCard";
+import NoteCard from "../../../pages/notes/components/RouteCard";
 import ROUTES from "../../../consts/routes";
 import userEvent from "@testing-library/user-event";
 
