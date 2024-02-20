@@ -16,7 +16,7 @@ const Header = ({ path }: HeaderProps) => {
           to={path.match("/notes") ? ROUTES.ROUTES.ME : ROUTES.HOME.ME}
           className="gradient-title"
         >
-          Carpooling
+          AvenTón
         </BlockLink>
         {path === ROUTES.HOME.ME && (
           <nav className="nav">
@@ -24,7 +24,7 @@ const Header = ({ path }: HeaderProps) => {
               Log in
             </Link>
             <Link to={ROUTES.AUTH.SIGNUP} className="button --dark">
-              Sign up
+              Registrarse
             </Link>
           </nav>
         )}

@@ -10,25 +10,18 @@ const Home = () => {
     <>
       <section className="content-grid">
         <div className="center-content content-home">
-          <h1 className="gradient-title --large-title">Carpooling</h1>
-          <p>Create your routes in a single app</p>
+          <h1 className="gradient-title --large-title">Empieza tus viajes ya</h1>
+          <p></p>
           <BlockLink className="button" to={ROUTES.AUTH.LOGIN}>
-            Get started!
+            Iniciar Sesión
           </BlockLink>
           <div className="ilustration full-width">
             <img
-              src="/home-draw.svg"
+              src="/car.svg"
               className="draw"
               alt="example ilustration"
               width="400"
               height="400"
-            />
-            <img
-              src="/wave-1.svg"
-              alt="wave figure"
-              className="initial-wave"
-              width="800"
-              height="620"
             />
           </div>
         </div>

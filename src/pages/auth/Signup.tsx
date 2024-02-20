@@ -51,20 +51,6 @@ const Signup = () => {
 
   return (
     <div className="container content-grid">
-      <img
-        className="wave first"
-        src="/wave-2.svg"
-        alt="wave figure"
-        width="500"
-        height="500"
-      />
-      <img
-        className="wave second"
-        src="/wave-3.svg"
-        alt="wave figure"
-        width="500"
-        height="500"
-      />
       <Form
         className="form-container center-content"
         fields={{
@@ -91,58 +77,58 @@ const Signup = () => {
       >
         <h2 className="gradient-title --medium-title">Sign up</h2>
         <Input
-          label="First name:"
-          placeholder="put your name"
+          label="Nombres:"
+          placeholder="Ingresar Nombres"
           name="firstName"
           errors={{
-            required: { value: true, message: "first name is required*" },
+            required: { value: true, message: "Es necesario ingresar los Nombres*" },
           }}
         />
         <Input
-          label="Last name:"
-          placeholder="put your last name"
+          label="Apellidos:"
+          placeholder="Ingresar los Apellidos"
           name="lastName"
           errors={{
-            required: { value: true, message: "last name is required*" },
+            required: { value: true, message: "Es necesario ingresar sus Apellidos*" },
           }}
         />
 
         <Input
-          label="Cell number:"
+          label="Número de celular:"
           type="number"
-          placeholder="put your cell number"
+          placeholder="Ingresar su número celular"
           name="cellNumber"
           errors={{
-            required: { value: true, message: "cell number is required*" },
+            required: { value: true, message: "Es necesario ingresar el número de celular*" },
           }}
         />
 
         <Input
-          label="Identification:"
+          label="Identificación:"
           type="number"
-          placeholder="put your identification"
+          placeholder="Ingresar su identificación"
           name="identification"
           errors={{
-            required: { value: true, message: "identification is required*" },
+            required: { value: true, message: "Es necesario ingresar su identificación*" },
           }}
         />
 
         <Input
-          label="Email:"
-          placeholder="put an email"
+          label="E-mail:"
+          placeholder="Ingresar su e-mail"
           name="email"
           errors={{
-            required: { value: true, message: "email is required*" },
+            required: { value: true, message: "Es necesario ingresar su E-mail*" },
           }}
         />
 
         <Input
-          label="Password: "
+          label="Contraseña: "
           name="password"
           placeholder="********"
           type="password"
           errors={{
-            required: { value: true, message: "password is required*" },
+            required: { value: true, message: "Es necesario ingresar su contraseña*" },
             minLength: {
               value: 8,
               message: "password must have min 8 digits*",
@@ -151,12 +137,12 @@ const Signup = () => {
         />
 
         <Input
-          label="Confirm password:"
+          label="Confirmar contraseña:"
           placeholder="******"
           name="confirmPassword"
           type="password"
           errors={{
-            required: { value: true, message: "password is required*" },
+            required: { value: true, message: "Es necesario confirmar la contraseña*" },
           }}
           confirmPassword={true}
         />
@@ -166,10 +152,10 @@ const Signup = () => {
           disabled={isLoading || isAuthenticating}
           className="button --dark --full-extension"
         >
-          Sign up!
+          Confirmar
         </button>
         <BlockLink className="button --full-extension" to={ROUTES.AUTH.LOGIN}>
-          Log in
+          Iniciar Sesión
         </BlockLink>
       </Form>
     </div>

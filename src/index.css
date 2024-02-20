@@ -1,12 +1,12 @@
 @import url("https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap");
 
 :root {
-  --primary-color-300: #a06ff9;
-  --primary-color-200: #8f88ff;
-  --primary-color-dark: #3800ff;
-  --primary-color: #6635fd;
-  --primary-color-transparent: #6735fd3b;
-  --alert-color: rgb(251 65 133);
+  --primary-color-300: #5e5e5e;
+  --primary-color-200: #838383;
+  --primary-color-dark: #000000;
+  --primary-color: #333333;
+  --primary-color-transparent: #2020203b;
+  --alert-color: rgb(251, 192, 65);
 
   --secondary-color: white;
   --secondary-color-transparent: rgba(255, 255, 255, 0.7);
@@ -32,15 +32,15 @@ body {
 }
 
 body.dark-mode {
-  --primary-color-300: #a06ff9;
-  --primary-color-transparent: #6735fd3b;
-  --primary-color: #6635fd;
+  --primary-color-300: #888888;
+  --primary-color-transparent: #3333333b;
+  --primary-color: #414141;
   --secundary-color: rgb(37, 37, 37);
   --secondary-color-transparent: rgba(255, 255, 255, 0.7);
 }
 
 a {
-  color: blue;
+  color: rgb(0, 0, 0);
   text-decoration: none;
 }
 
