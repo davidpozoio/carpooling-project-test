@@ -7,7 +7,7 @@ export interface SignupDto extends LoginDto {
   firstName: string;
   lastName: string;
   cellNumber: string;
-  indentification: string;
+  identification: string;
 }
 
 export interface ErrorAuthResponse {

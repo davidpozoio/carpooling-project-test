@@ -1,16 +1,13 @@
 import { useMutation, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
-import {
-  deleteNote,
-  markNoteAsDeleted,
-  restoreNote,
-} from "../../../services/noteService";
+import { markNoteAsDeleted, restoreNote } from "../../../services/noteService";
 import CACHE_KEYS from "../../../consts/cache-keys";
 import { NoteGetDto } from "../../../models/noteModel";
 import { MouseEventHandler } from "react";
 import ROUTES from "../../../consts/routes";
 import { useAppStore } from "../../../store/store";
 import { RouteGetResponse } from "../../../models/routeMode";
+import { deleteRouteById } from "../../../services/routeService";
 
 const useNoteCard = (route: RouteGetResponse, trashBean: boolean) => {
   const navigate = useNavigate();
@@ -18,7 +15,7 @@ const useNoteCard = (route: RouteGetResponse, trashBean: boolean) => {
   const queryClient = useQueryClient();
 
   const deletePermanently = useMutation({
-    mutationFn: (id: number) => deleteNote(id),
+    mutationFn: (id: number) => deleteRouteById(id),
     onSuccess: () => {
       queryClient.setQueryData(
         [

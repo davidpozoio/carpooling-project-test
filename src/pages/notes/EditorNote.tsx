@@ -25,7 +25,8 @@ const EditorNote = ({ route }: EditorNoteProps) => {
       id: 1,
       name: "loading...",
       description: "loading...",
-      startDate: 123,
+      startDate: "",
+      routeStop: [],
     }
   );
   const { id } = useParams();

@@ -1,12 +1,12 @@
-import { useContext, useState } from "react";
+import { useEffect, useState } from "react";
 import { StopGetResponse } from "../../models/stopMode";
 import Input from "./Input";
 import Select, { OptionField } from "./Select";
 import "../styles/stop-select-styles.css";
 import { CloseOutlined } from "@ant-design/icons";
-import { FormContext } from "./Form";
 
-interface OnChangeStopSelect {
+export interface OnChangeStopSelect {
+  id: number;
   stopId: number;
   startHour: string;
 }
@@ -18,36 +18,27 @@ interface StopSelectProps {
   onChange?: (data: OnChangeStopSelect) => void;
 }
 
-const StopSelect = ({ stops, onClose, id }: StopSelectProps) => {
+const StopSelect = ({ stops, onClose, onChange, id }: StopSelectProps) => {
   const [stopsOptions] = useState<OptionField[]>(
     stops.map((stop) => {
       return { value: stop.id.toString(), text: stop.name };
     })
   );
+  const [stopSelect, setStopSelect] = useState<OnChangeStopSelect>({
+    stopId: 1,
+    startHour: "",
+    id,
+  });
 
-  const { setRouteStops } = useContext(FormContext);
+  useEffect(() => {
+    if (onChange) onChange(stopSelect);
+  }, [stopSelect]);
 
   const onChangeSelect = (stop: string) => {
-    if (setRouteStops)
-      setRouteStops((prev) =>
-        prev.map((el) => {
-          if (el.id === id) {
-            return { ...el, stopId: Number(stop) };
-          }
-          return el;
-        })
-      );
+    setStopSelect((prev) => ({ ...prev, stopId: Number(stop) }));
   };
   const onChangeDate = (date: string) => {
-    if (setRouteStops)
-      setRouteStops((prev) =>
-        prev.map((el) => {
-          if (el.id === id) {
-            return { ...el, arriveHour: date };
-          }
-          return el;
-        })
-      );
+    setStopSelect((prev) => ({ ...prev, startHour: date }));
   };
 
   return (
@@ -72,7 +63,7 @@ const StopSelect = ({ stops, onClose, id }: StopSelectProps) => {
       />
       <Input
         label="Arrive hour:"
-        type="time"
+        type="date"
         name="arriveHour"
         placeholder="arrive hour"
         onChange={onChangeDate}

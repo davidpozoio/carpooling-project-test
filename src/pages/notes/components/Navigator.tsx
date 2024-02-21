@@ -8,6 +8,7 @@ import {
   CopyOutlined,
   DeleteOutlined,
   LogoutOutlined,
+  UserAddOutlined,
 } from "@ant-design/icons";
 import "../styles/navigator-styles.css";
 
@@ -46,6 +47,12 @@ const Navigator = () => {
           <BlockLink to={ROUTES.ROUTES.TRASH} className="nav-link">
             <DeleteOutlined className="icon" />
             All routes
+          </BlockLink>
+        </li>
+        <li>
+          <BlockLink to={ROUTES.ROUTES.USER_DETAILS} className="nav-link">
+            <UserAddOutlined className="icon" />
+            User details
           </BlockLink>
         </li>
         <li>

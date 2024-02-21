@@ -9,6 +9,8 @@ import { PlusOutlined, LoadingOutlined } from "@ant-design/icons";
 import "../styles/note-list-styles.css";
 import useTitle from "../../../hooks/useTitle";
 import { getRoutes } from "../../../services/routeService";
+import ModalStopsMenu from "./ModalStopsMenu";
+import { RouteGetResponse } from "../../../models/routeMode";
 
 interface NoteListProps {
   trashBean?: boolean;
@@ -16,9 +18,12 @@ interface NoteListProps {
 
 const NoteList = ({ trashBean }: NoteListProps) => {
   const { toggle, setTrue, setFalse } = useToggle(false);
+  const stopsModalMenu = useToggle(false);
   const isCreatingNote = useAppStore((state) => state.isCreatingNote);
   const [error, setError] = useState<string | undefined>(undefined);
-
+  const [selectedRoute, setSelectedRoute] = useState<
+    RouteGetResponse | undefined
+  >(undefined);
   useTitle(trashBean ? "trash note list" : "note list");
 
   const {
@@ -54,6 +59,11 @@ const NoteList = ({ trashBean }: NoteListProps) => {
 
   return (
     <div className="--main-content note-grid">
+      <ModalStopsMenu
+        show={stopsModalMenu.toggle}
+        onClose={() => stopsModalMenu.setFalse()}
+        stops={selectedRoute?.routeStop}
+      />
       <ModalNoteMenu
         show={(toggle && !trashBean) || (isCreatingNote && !trashBean)}
         onClose={handleClose}
@@ -74,14 +84,27 @@ const NoteList = ({ trashBean }: NoteListProps) => {
       {error && (
         <>
           <span>{error}</span>
-          <button onClick={() => refetch()} disabled={isLoading}>
-            Reload notes
+          <button
+            className="button --dark"
+            onClick={() => refetch()}
+            disabled={isLoading}
+          >
+            Reload routes
           </button>
         </>
       )}
       <section className="note-list">
         {routes?.map((route) => (
-          <RouteCard key={route.id} route={route} trashBean={!!trashBean} />
+          <RouteCard
+            key={route.id}
+            route={route}
+            trashBean={!!trashBean}
+            onClick={() => {
+              console.log("click on route card");
+              setSelectedRoute(route);
+              stopsModalMenu.setTrue();
+            }}
+          />
         ))}
       </section>
 

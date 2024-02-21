@@ -4,6 +4,7 @@ import ROUTES from "../../consts/routes";
 
 import { Suspense, lazy } from "react";
 import LoadingPage from "../../components/LoadingPage";
+import UserDetails from "./UserDetails";
 
 const NoteList = lazy(() => import("./components/NoteList"));
 const EditorNote = lazy(() => import("./EditorNote"));
@@ -27,6 +28,7 @@ const NoteRouter = (
         </Suspense>
       }
     />
+    <Route path={ROUTES.ROUTES.USER_DETAILS} element={<UserDetails />} />
   </>
 );
 

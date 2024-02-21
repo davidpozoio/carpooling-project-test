@@ -1,14 +1,13 @@
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
-import { createNote } from "../../../services/noteService";
-import { NoteContent, NoteGetDto } from "../../../models/noteModel";
 import ROUTES from "../../../consts/routes";
-import CACHE_KEYS from "../../../consts/cache-keys";
 import { useAppStore } from "../../../store/store";
 import { useState } from "react";
 import "../styles/modal-note-menu-styles.css";
 import Form from "../../../components/forms/Form";
 import Input from "../../../components/forms/Input";
+import { createRoute } from "../../../services/routeService";
+import { RoutePostRequest } from "../../../models/routeMode";
 
 interface ModalNoteMenuProps {
   show?: boolean;
@@ -25,23 +24,11 @@ const ModalNoteMenu = ({
   );
   const setIsCreatingNote = useAppStore((state) => state.setIsCreatingNote);
   const isCreatingNote = useAppStore((state) => state.isCreatingNote);
-  const queryClient = useQueryClient();
   const { mutate } = useMutation({
-    mutationFn: (data: NoteContent) => createNote(data),
+    mutationFn: (data: RoutePostRequest) => createRoute(data),
     onSuccess: (response) => {
-      const note = response.data.note;
-
-      queryClient.setQueryData(
-        [CACHE_KEYS.NOTE_LIST.ME, CACHE_KEYS.NOTE_LIST.NORMAL],
-        (oldData?: NoteGetDto[]) => {
-          if (!oldData) return [];
-          return [response.data.note, ...oldData];
-        }
-      );
-      setIsCreatingNote(false);
-
-      navigate(ROUTES.ROUTES.EDITORID(response.data.note.id), {
-        state: { note },
+      navigate(ROUTES.ROUTES.EDITORID(response.data.id), {
+        state: { note: response.data.id },
       });
     },
     onError: (err) => {
@@ -54,12 +41,6 @@ const ModalNoteMenu = ({
       setIsCreatingNote(false);
     },
   });
-
-  const handleClick = () => {
-    setErrorMessage(undefined);
-    mutate({ title: "Default title", content: "Default content" });
-    setIsCreatingNote(true);
-  };
 
   return (
     <div
@@ -76,7 +57,19 @@ const ModalNoteMenu = ({
       >
         <h3 className="subtitle">Create a new route</h3>
         <p>{errorMessage}</p>
-        <Form fields={{}} onSubmit={handleClick}>
+        <Form
+          fields={{ name: "", description: "", startDate: "" }}
+          onSubmit={(data) => {
+            setErrorMessage(undefined);
+            console.log(data);
+            mutate({
+              name: data["name"],
+              description: data["description"],
+              startDate: "2024-28-01",
+            });
+            setIsCreatingNote(true);
+          }}
+        >
           <Input
             label="Route name:"
             name="name"

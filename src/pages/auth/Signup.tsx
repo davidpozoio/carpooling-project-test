@@ -82,7 +82,7 @@ const Signup = () => {
             firstName: data["firstName"],
             lastName: data["lastName"],
             cellNumber: data["cellNumber"],
-            indentification: data["identification"],
+            identification: data["identification"],
             email: data["email"],
             password: data["password"],
           });

@@ -9,9 +9,10 @@ import "../styles/note-card-styles.css";
 interface NoteCardProps {
   route: RouteGetResponse;
   trashBean?: boolean;
+  onClick?: () => void;
 }
 
-const RouteCard = ({ route, trashBean = false }: NoteCardProps) => {
+const RouteCard = ({ route, trashBean = false, onClick }: NoteCardProps) => {
   const { toggle, setFalse, handleToggle } = useToggle(false);
 
   const { handleClick, handleDeletePermanently } = useNoteCard(
@@ -26,7 +27,14 @@ const RouteCard = ({ route, trashBean = false }: NoteCardProps) => {
     <div className="card-container">
       <span className="card-shadow"></span>
       <div
-        onClick={deletingNote?.isDeleting ? () => {} : handleClick}
+        onClick={
+          deletingNote?.isDeleting
+            ? () => {}
+            : (e) => {
+                if (onClick) onClick();
+                handleClick(e);
+              }
+        }
         className="note-card"
       >
         {deletingNote?.isDeleting && (
@@ -39,16 +47,19 @@ const RouteCard = ({ route, trashBean = false }: NoteCardProps) => {
               : "Deleting route..."}
           </span>
         )}
-        <button
-          data-testid="options"
-          onClick={(e) => {
-            e.stopPropagation();
-            handleToggle();
-          }}
-          className="options-button"
-        >
-          <MenuOutlined />
-        </button>
+        {!trashBean && (
+          <button
+            data-testid="options"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleToggle();
+            }}
+            className="options-button"
+          >
+            <MenuOutlined />
+          </button>
+        )}
+
         <Options
           data-testid="options"
           show={toggle}
@@ -64,6 +75,7 @@ const RouteCard = ({ route, trashBean = false }: NoteCardProps) => {
         />
         <span className="card-title">{route.name}</span>
         <p className="card-content">{route.description}</p>
+        <span>{new Date(route.startDate).toDateString()}</span>
       </div>
     </div>
   );

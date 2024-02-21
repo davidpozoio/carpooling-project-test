@@ -25,6 +25,9 @@ const ROUTES = {
     get CREATE() {
       return `${this.ME}/create`;
     },
+    get USER_DETAILS() {
+      return `${this.ME}/user-details`;
+    },
   },
 };
 
