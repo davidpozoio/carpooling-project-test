@@ -40,13 +40,13 @@ const Navigator = () => {
         <li>
           <BlockLink to={ROUTES.ROUTES.ME} className="nav-link">
             <CopyOutlined className="icon" />
-            <span>My routes</span>
+            <span>Mis Rutas</span>
           </BlockLink>
         </li>
         <li>
           <BlockLink to={ROUTES.ROUTES.TRASH} className="nav-link">
             <DeleteOutlined className="icon" />
-            All routes
+            Todas las rutas
           </BlockLink>
         </li>
         <li>
@@ -62,7 +62,7 @@ const Navigator = () => {
             disabled={isLoading}
           >
             <LogoutOutlined className="icon" />
-            <span>Log out</span>
+            <span>Cerrar Sesión</span>
           </button>
         </li>
       </ul>

@@ -16,15 +16,15 @@ const Header = ({ path }: HeaderProps) => {
           to={path.match("/routes") ? ROUTES.ROUTES.ME : ROUTES.HOME.ME}
           className="gradient-title"
         >
-          Carpooling
+          AvenTón
         </BlockLink>
         {path === ROUTES.HOME.ME && (
           <nav className="nav">
             <Link to={ROUTES.AUTH.LOGIN} className="button --dark">
-              Log in
+              Logearte
             </Link>
             <Link to={ROUTES.AUTH.SIGNUP} className="button --dark">
-              Sign up
+              Registrarse
             </Link>
           </nav>
         )}

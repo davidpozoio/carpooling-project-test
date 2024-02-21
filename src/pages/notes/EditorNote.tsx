@@ -85,7 +85,7 @@ const EditorNote = ({ route }: EditorNoteProps) => {
         </div>
       )}
       {!isDataPassed && isError && errorStatus === 500 && (
-        <span>There was an error, retry?</span>
+        <span>Hubo un error, ¿reintentar?</span>
       )}
     </div>
   );

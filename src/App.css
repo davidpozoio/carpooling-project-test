@@ -131,6 +131,19 @@ button:hover {
   animation: opacity-transition 0.2s normal ease-out;
 }
 
+.stop-card {
+  display: grid;
+  gap: 10px;
+
+  padding: 20px 10px;
+
+  width: fit-content;
+
+  border: 1px solid var(--primary-color);
+
+  border-radius: 10px;
+}
+
 @keyframes opacity-transition {
   0% {
     opacity: 0;

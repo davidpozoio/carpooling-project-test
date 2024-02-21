@@ -42,9 +42,9 @@ const RouteCard = ({ route, trashBean = false, onClick }: NoteCardProps) => {
             <LoadingOutlined style={{ fontSize: "30px" }} />
             {trashBean
               ? deletingNote?.isDeletingPermanently
-                ? "Deleting route..."
-                : "Restoring route..."
-              : "Deleting route..."}
+                ? "Eliminando ruta..."
+                : "Restaurando ruta..."
+              : "Eliminando ruta..."}
           </span>
         )}
         {!trashBean && (
@@ -68,7 +68,7 @@ const RouteCard = ({ route, trashBean = false, onClick }: NoteCardProps) => {
           }}
           values={[
             {
-              name: "Delete",
+              name: "Eliminar",
               onClick: handleDeletePermanently,
             },
           ]}

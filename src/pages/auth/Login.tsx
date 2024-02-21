@@ -36,13 +36,13 @@ const Login = () => {
       if (codeError === ERROR_CODES.E2000.CODE) {
         setErrors((prev) => [
           ...prev,
-          { inputName: "email", message: "email is incorrect" },
+          { inputName: "email", message: "El e-mail es incorrecto" },
         ]);
       }
       if (codeError === ERROR_CODES.E2001.CODE) {
         setErrors((prev) => [
           ...prev,
-          { inputName: "password", message: "password is incorrect" },
+          { inputName: "password", message: "La contraseña es incorrecta" },
         ]);
       }
     },
@@ -54,20 +54,6 @@ const Login = () => {
 
   return (
     <div className="container content-grid">
-      <img
-        className="wave first"
-        src="/wave-2.svg"
-        alt="wave figure"
-        width="500"
-        height="500"
-      />
-      <img
-        className="wave second"
-        src="/wave-3.svg"
-        alt="wave figure"
-        width="500"
-        height="500"
-      />
       <Form
         className="form-container center-content"
         fields={{ email: "", password: "" }}
@@ -77,13 +63,13 @@ const Login = () => {
         }}
         errors={errors}
       >
-        <h2 className="gradient-title --medium-title">Log in</h2>
+        <h2 className="gradient-title --medium-title">Inicias Sesión</h2>
         <Input
-          label="Email: "
+          label="E-mail: "
           name="email"
-          placeholder="put an email"
+          placeholder="Ingresar el e-mail"
           errors={{
-            required: { value: true, message: "email is required*" },
+            required: { value: true, message: "Es necesario ingresar el e-mail*" },
           }}
         />
         <Input
@@ -92,7 +78,7 @@ const Login = () => {
           type="password"
           placeholder="********"
           errors={{
-            required: { value: true, message: "password is required*" },
+            required: { value: true, message: "Es necesario ingresar la contraseña*" },
           }}
         />
 
@@ -101,10 +87,10 @@ const Login = () => {
           type="submit"
           disabled={isLoading || isAuthenticating}
         >
-          Log in!
+          Iniciar Sesión
         </button>
         <BlockLink className="button --full-extension" to={ROUTES.AUTH.SIGNUP}>
-          sign up
+          Registrarse
         </BlockLink>
       </Form>
     </div>
