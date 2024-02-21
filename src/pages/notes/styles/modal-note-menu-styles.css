@@ -46,6 +46,9 @@ button {
 
 .button-container {
   display: flex;
+
+  margin-top: 10px;
+
   width: 250px;
   gap: 20px;
 }

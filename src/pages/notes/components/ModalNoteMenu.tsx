@@ -7,6 +7,8 @@ import CACHE_KEYS from "../../../consts/cache-keys";
 import { useAppStore } from "../../../store/store";
 import { useState } from "react";
 import "../styles/modal-note-menu-styles.css";
+import Form from "../../../components/forms/Form";
+import Input from "../../../components/forms/Input";
 
 interface ModalNoteMenuProps {
   show?: boolean;
@@ -72,24 +74,63 @@ const ModalNoteMenu = ({
         }}
         className="modal-menu"
       >
-        <h3 className="subtitle">Create a new note</h3>
+        <h3 className="subtitle">Create a new route</h3>
         <p>{errorMessage}</p>
-        <section className="button-container">
-          <button
-            className="button --dark --bordered --full-extension"
-            onClick={handleClick}
-            disabled={isCreatingNote}
-          >
-            {isCreatingNote ? "Creating..." : "create!"}
-          </button>
-          <button
-            className="button --bordered --full-extension"
-            onClick={onClose}
-            disabled={isCreatingNote}
-          >
-            cancel
-          </button>
-        </section>
+        <Form fields={{}} onSubmit={handleClick}>
+          <Input
+            label="Route name:"
+            name="name"
+            errors={{
+              required: {
+                value: true,
+                message: "name is required*",
+              },
+            }}
+            placeholder="put a name"
+            type="text"
+          />
+          <Input
+            label="Route description:"
+            name="description"
+            errors={{
+              required: {
+                value: true,
+                message: "description is required",
+              },
+            }}
+            placeholder="put a description"
+            type="text"
+          />
+          <Input
+            label="Route start date:"
+            name="startDate"
+            errors={{
+              required: {
+                value: true,
+                message: "start date is required",
+              },
+            }}
+            placeholder="put a date"
+            type="date"
+          />
+          <section className="button-container">
+            <button
+              type="submit"
+              className="button --dark --bordered --full-extension"
+              disabled={isCreatingNote}
+            >
+              {isCreatingNote ? "Creating..." : "create!"}
+            </button>
+            <button
+              type="button"
+              className="button --bordered --full-extension"
+              onClick={onClose}
+              disabled={isCreatingNote}
+            >
+              cancel
+            </button>
+          </section>
+        </Form>
       </div>
     </div>
   );

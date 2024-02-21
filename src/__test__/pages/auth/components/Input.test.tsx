@@ -1,7 +1,7 @@
 import { render, fireEvent, screen } from "@testing-library/react";
 import { describe, expect, test } from "vitest";
-import Input from "../../../../pages/auth/components/Input";
-import Form from "../../../../pages/auth/components/Form";
+import Input from "../../../../components/forms/Input";
+import Form from "../../../../components/forms/Form";
 import userEvent from "@testing-library/user-event";
 
 describe("Input component", () => {

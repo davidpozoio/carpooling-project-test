@@ -1,5 +1,5 @@
-import Form from "./components/Form";
-import Input from "./components/Input";
+import Form from "../../components/forms/Form";
+import Input from "../../components/forms/Input";
 import ROUTES from "../../consts/routes";
 import { login } from "../../services/authService";
 import { ErrorAuthResponse, LoginDto } from "../../models/authModel";

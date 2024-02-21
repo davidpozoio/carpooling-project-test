@@ -10,6 +10,7 @@ interface InputProps {
   placeholder: string;
   type?: HTMLInputTypeAttribute;
   confirmPassword?: boolean;
+  onChange?: (value: string) => void;
 }
 
 const Input = ({
@@ -19,6 +20,7 @@ const Input = ({
   placeholder,
   type = "",
   confirmPassword = false,
+  onChange,
 }: InputProps) => {
   const { register, errors: errorsState, watch } = useContext(FormContext);
 
@@ -46,6 +48,10 @@ const Input = ({
         placeholder={placeholder}
         {...fields}
         className="input"
+        onChange={(e) => {
+          if (onChange) onChange(e.target.value);
+          fields?.onChange(e);
+        }}
       />
       {errorsState
         ? errorsState[name] && (

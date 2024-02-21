@@ -1,5 +1,5 @@
-import Form from "./components/Form";
-import Input from "./components/Input";
+import Form from "../../components/forms/Form";
+import Input from "../../components/forms/Input";
 import ROUTES from "../../consts/routes";
 import { signup } from "../../services/authService";
 import useAutomaticLogin from "../../hooks/useAutomaticLogin";

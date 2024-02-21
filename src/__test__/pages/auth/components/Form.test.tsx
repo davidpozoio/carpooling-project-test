@@ -1,8 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, test, vi } from "vitest";
-import Form from "../../../../pages/auth/components/Form";
+import Form from "../../../../components/forms/Form";
 import userEvent from "@testing-library/user-event";
-import Input from "../../../../pages/auth/components/Input";
+import Input from "../../../../components/forms/Input";
 
 describe("Form component", () => {
   test("should render", () => {

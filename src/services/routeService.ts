@@ -4,8 +4,12 @@ import { RouteGetResponse, RoutePostRequest } from "../models/routeMode";
 
 export function getRoutes(areMyRoutes: boolean = false) {
   return axios.get<RouteGetResponse[]>(
-    `${environment.HOST_BACK}/route${areMyRoutes ? "/userRoutes" : ""}`
+    `${environment.HOST_BACK}/route${!areMyRoutes ? "/userRoutes" : ""}`
   );
+}
+
+export function getRouteById(id: number) {
+  return axios.get<RouteGetResponse>(`${environment.HOST_BACK}/route/${id}`);
 }
 
 export function createRoute(route: RoutePostRequest) {

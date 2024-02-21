@@ -14,7 +14,7 @@ const ROUTES = {
   ROUTES: {
     ME: "/routes",
     get TRASH() {
-      return `${this.ME}/trash`;
+      return `${this.ME}/all`;
     },
     get EDITOR() {
       return `${this.ME}/:id`;

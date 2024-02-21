@@ -6,8 +6,11 @@
 
 .editor-grid {
   display: grid;
-  grid-template-rows: 1fr 10fr;
+  grid-template-rows: 100px 1fr;
+
   gap: 20px;
+
+  padding-bottom: 50px;
 }
 
 .content-editor {

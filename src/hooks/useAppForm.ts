@@ -1,6 +1,10 @@
+import { useContext } from "react";
 import { FieldValues, useForm } from "react-hook-form";
+import { FormContext } from "../components/forms/Form";
 
-const useAppForm = <T extends FieldValues>(submit: (data: T) => void) => {
+const useAppForm = <T extends FieldValues>(
+  submit: (data: T, routeStops?: unknown) => void
+) => {
   const {
     handleSubmit,
     register,
@@ -9,7 +13,10 @@ const useAppForm = <T extends FieldValues>(submit: (data: T) => void) => {
     setError,
     clearErrors,
   } = useForm<T>({ mode: "all" });
-  const onSubmit = handleSubmit(submit);
+
+  const { routeStops } = useContext(FormContext);
+
+  const onSubmit = handleSubmit((data) => submit(data, routeStops));
 
   return { register, onSubmit, errors, watch, setError, clearErrors };
 };
