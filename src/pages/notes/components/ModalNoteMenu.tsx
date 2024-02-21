@@ -55,7 +55,7 @@ const ModalNoteMenu = ({
         }}
         className="modal-menu"
       >
-        <h3 className="subtitle">Create a new route</h3>
+        <h3 className="subtitle">Crea una nueva ruta</h3>
         <p>{errorMessage}</p>
         <Form
           fields={{ name: "", description: "", startDate: "" }}
@@ -71,39 +71,39 @@ const ModalNoteMenu = ({
           }}
         >
           <Input
-            label="Route name:"
+            label="Nombre de ruta:"
             name="name"
             errors={{
               required: {
                 value: true,
-                message: "name is required*",
+                message: "el nombre es requerido*",
               },
             }}
-            placeholder="put a name"
+            placeholder="Pon un nombre"
             type="text"
           />
           <Input
-            label="Route description:"
+            label="Descripción:"
             name="description"
             errors={{
               required: {
                 value: true,
-                message: "description is required",
+                message: "la descripción es requerida*",
               },
             }}
-            placeholder="put a description"
+            placeholder="Pon una descripción"
             type="text"
           />
           <Input
-            label="Route start date:"
+            label="Fecha de inicio:"
             name="startDate"
             errors={{
               required: {
                 value: true,
-                message: "start date is required",
+                message: "la fecha es requerida*",
               },
             }}
-            placeholder="put a date"
+            placeholder="pon una fecha"
             type="date"
           />
           <section className="button-container">
@@ -112,7 +112,7 @@ const ModalNoteMenu = ({
               className="button --dark --bordered --full-extension"
               disabled={isCreatingNote}
             >
-              {isCreatingNote ? "Creating..." : "create!"}
+              {isCreatingNote ? "Creating..." : "crear!"}
             </button>
             <button
               type="button"
@@ -120,7 +120,7 @@ const ModalNoteMenu = ({
               onClick={onClose}
               disabled={isCreatingNote}
             >
-              cancel
+              cancelar
             </button>
           </section>
         </Form>
