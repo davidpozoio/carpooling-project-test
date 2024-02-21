@@ -63,7 +63,7 @@ const Login = () => {
         }}
         errors={errors}
       >
-        <h2 className="gradient-title --medium-title">Log in</h2>
+        <h2 className="gradient-title --medium-title">Inicias Sesión</h2>
         <Input
           label="E-mail: "
           name="email"

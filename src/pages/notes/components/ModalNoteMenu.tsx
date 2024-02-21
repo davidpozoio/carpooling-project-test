@@ -46,7 +46,7 @@ const ModalNoteMenu = ({
       const error = err as { response: { status: number } };
       if (error?.response?.status === 500) {
         setErrorMessage(
-          "Sorry, there was an error to create the note, try again!"
+          "Lo sentimos, hubo un error al crear la ruta, ¡inténtalo de nuevo!"
         );
       }
       setIsCreatingNote(false);
@@ -72,7 +72,7 @@ const ModalNoteMenu = ({
         }}
         className="modal-menu"
       >
-        <h3 className="subtitle">Create a new note</h3>
+        <h3 className="subtitle">Crear una nueva nota</h3>
         <p>{errorMessage}</p>
         <section className="button-container">
           <button
@@ -80,14 +80,14 @@ const ModalNoteMenu = ({
             onClick={handleClick}
             disabled={isCreatingNote}
           >
-            {isCreatingNote ? "Creating..." : "create!"}
+            {isCreatingNote ? "Creating..." : "Crear"}
           </button>
           <button
             className="button --bordered --full-extension"
             onClick={onClose}
             disabled={isCreatingNote}
           >
-            cancel
+            Cancelar
           </button>
         </section>
       </div>

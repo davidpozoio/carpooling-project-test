@@ -21,7 +21,7 @@ const Header = ({ path }: HeaderProps) => {
         {path === ROUTES.HOME.ME && (
           <nav className="nav">
             <Link to={ROUTES.AUTH.LOGIN} className="button --dark">
-              Log in
+              Logearte
             </Link>
             <Link to={ROUTES.AUTH.SIGNUP} className="button --dark">
               Registrarse

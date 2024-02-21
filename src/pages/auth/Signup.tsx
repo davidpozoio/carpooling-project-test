@@ -75,7 +75,7 @@ const Signup = () => {
         }}
         errors={errors}
       >
-        <h2 className="gradient-title --medium-title">Sign up</h2>
+        <h2 className="gradient-title --medium-title">Registrarse</h2>
         <Input
           label="Nombres:"
           placeholder="Ingresar Nombres"

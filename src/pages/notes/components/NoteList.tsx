@@ -35,7 +35,7 @@ const NoteList = ({ trashBean }: NoteListProps) => {
       onError: (err) => {
         const error = err as { response: { status: number } };
         if (error?.response?.status === 500) {
-          setError("Sorry, there was an error to get the routes, try again!");
+          setError("Lo sentimos, hubo un error al obtener las rutas, ¡inténtalo de nuevo!");
         }
       },
       onSuccess: () => {
@@ -59,11 +59,11 @@ const NoteList = ({ trashBean }: NoteListProps) => {
         onClose={handleClose}
       />
       <h2 className="gradient-title --medium-title note-list-title">
-        {trashBean ? "All routes" : "My routes"}
+        {trashBean ? "Todas las rutas" : "Mis rutas"}
       </h2>
       {routes?.length === 0 && (
         <span>
-          {trashBean ? "Trash empty" : "There is no notes yet, create one!"}
+          {trashBean ? "Papelera vacia" : "Aún no hay rutas, ¡crea una!"}
           <img
             className="no-notes-draw"
             src="/no-notes-draw.svg"
@@ -75,7 +75,7 @@ const NoteList = ({ trashBean }: NoteListProps) => {
         <>
           <span>{error}</span>
           <button onClick={() => refetch()} disabled={isLoading}>
-            Reload notes
+            Recargar notas
           </button>
         </>
       )}
@@ -88,7 +88,7 @@ const NoteList = ({ trashBean }: NoteListProps) => {
       {isLoading && (
         <span className="loading-overlay">
           <LoadingOutlined style={{ fontSize: "30px" }} />
-          Getting notes...
+          Recibiendo notas...
         </span>
       )}
 
